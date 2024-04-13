@@ -36,10 +36,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		{
 
 			//入力機能の更新
-			InputCntrol::Update();
+			InputControl::Update();
 
 			//シーンの更新処理
-			scene->Draw();
+			scene->Update();
 
 			//画面の初期化
 			ClearDrawScreen();

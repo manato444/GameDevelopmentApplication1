@@ -1,8 +1,8 @@
 #pragma once
 
 #include<vector>
-#include<string.h>
-#include"..Objects/GameObject.h"
+#include<string>
+#include"../Objects/GameObject.h"
 
 class Scene
 {
@@ -11,7 +11,7 @@ private:
 
 public:
 	Scene();
-	Scene();
+	~Scene();
 
 	void Initialize();
 	void Update();
@@ -29,7 +29,7 @@ private:
 		T* new_instance = new T();
 
 		//GameObjectクラスを継承しているか確認
-		GameObject* new_object = dynammic_cast<GameObject*>(new_instance);
+		GameObject* new_object = dynamic_cast<GameObject*>(new_instance);
 
 		//エラーチェック
 		if (new_object == nullptr)
@@ -42,7 +42,10 @@ private:
 		new_object->Initialize();
 
 		//位置情報の設定
-		new_object.push_back(new_object);
+		new_object->SetLocation(location);
+
+		//オブジェクトリストに追加
+		objects.push_back(new_object);
 
 		//インスタンスのポインタを返却
 		return new_instance;
