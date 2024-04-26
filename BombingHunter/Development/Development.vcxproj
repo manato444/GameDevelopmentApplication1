@@ -136,6 +136,34 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
+    <ClCompile Include="Objects\Bullet\Bullet.cpp" />
+    <ClCompile Include="Objects\Bullet\BulletManager.cpp" />
+    <ClCompile Include="Objects\Enemy\Enemy_Base.cpp" />
+    <ClCompile Include="Objects\Enemy\Hakoteki.cpp" />
+    <ClCompile Include="Objects\Enemy\Haneteki.cpp" />
+    <ClCompile Include="Objects\Enemy\Harpie.cpp" />
+    <ClCompile Include="Objects\Enemy\Kin.cpp" />
+    <ClCompile Include="Objects\GameObject.cpp" />
+    <ClCompile Include="Objects\Player\Player.cpp" />
+    <ClCompile Include="Objects\UI\UI.cpp" />
+    <ClCompile Include="Scene\Scene.cpp" />
+    <ClCompile Include="Utility\InputControl.cpp" />
+    <ClCompile Include="Utility\Vector2D.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Objects\Bullet\Bullet.h" />
+    <ClInclude Include="Objects\Bullet\BulletManager.h" />
+    <ClInclude Include="Objects\Enemy\Enemy_Base.h" />
+    <ClInclude Include="Objects\Enemy\Hakoteki.h" />
+    <ClInclude Include="Objects\Enemy\Haneteki.h" />
+    <ClInclude Include="Objects\Enemy\Harpie.h" />
+    <ClInclude Include="Objects\Enemy\Kin.h" />
+    <ClInclude Include="Objects\GameObject.h" />
+    <ClInclude Include="Objects\Player\Player.h" />
+    <ClInclude Include="Objects\UI\UI.h" />
+    <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Utility\InputControl.h" />
+    <ClInclude Include="Utility\Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

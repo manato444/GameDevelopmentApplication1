@@ -18,8 +18,8 @@ Player::~Player()
 void Player::Initialize()
 {
 	//画像の読み込み
-	animation[0] = LoadGraph("image/Tri-pilot/1.png");
-	animation[1] = LoadGraph("image/Tri-pilot/2.png");
+	animation[0] = LoadGraph("image/トリパイロット/飛ぶ1.png");
+	animation[1] = LoadGraph("image/トリパイロット/飛ぶ2.png");
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
@@ -51,7 +51,7 @@ void Player::Update()
 void Player::Draw()const
 {
 
-	DrawExtendGraph(1, 1, 1, 1, image, FALSE);
+	//DrawExtendGraph(1, 1, 1, 1, image, FALSE);
 
 	//プレイヤー画像の描画
 	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
@@ -95,12 +95,12 @@ void Player::Movement()
 	//左右移動
 	if (InputControl::GetKey(KEY_INPUT_LEFT))
 	{
-		velocity.x += -10.0f;
+		velocity.x += -2.0f;
 		flip_flag = TRUE;
 	}
-	else if(InputControl::GetKey(KEY_INPUT_RIGHT))
+	else if (InputControl::GetKey(KEY_INPUT_RIGHT))
 	{
-		velocity.x += 10.0f;
+		velocity.x += 2.0f;
 		flip_flag = FALSE;
 	}
 	else
@@ -110,6 +110,18 @@ void Player::Movement()
 
 	//現在の位置座標に速さを加算する
 	location += velocity;
+
+	//画面外に行かないようにする処理
+	if (location.x < (scale / 2.0f))
+	{
+		velocity.x = 0.0f;
+		location.x = scale / 2.0f;
+	}
+	else if ((640.0f - (scale / 2.0f)) < location.x)
+	{
+		velocity.x = 0.0f;
+		location.x = 640.0f - (scale / 2.0f);
+	}
 }
 
 //アニメーション制御
@@ -119,7 +131,7 @@ void Player::AnimeControl()
 	animation_count++;
 
 	//60フレーム目に到達したら
-	if (animation_count >= 10)
+	if (animation_count >= 60)
 	{
 		//カウントリセット
 		animation_count = 0;
@@ -128,13 +140,13 @@ void Player::AnimeControl()
 		if (image == animation[0])
 		{
 			//虹色関数
-			GraphFilter(image, DX_GRAPH_FILTER_HSB, 0, 5, 8, 0);
+			//GraphFilter(image, DX_GRAPH_FILTER_HSB, 0, 5, 8, 0);
 			image = animation[1];
 		}
 		else
 		{
 			//虹色関数
-			GraphFilter(image, DX_GRAPH_FILTER_HSB, 0, 5, 8, 0);
+			//GraphFilter(image, DX_GRAPH_FILTER_HSB, 0, 5, 8, 0);
 			image = animation[0];
 		}
 	}
