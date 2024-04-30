@@ -3,24 +3,42 @@
 #include<vector>
 #include<string>
 #include"../Objects/GameObject.h"
-#include"../Objects/Enemy/Enemy_Base.h"
+#include"../Utility/InputControl.h"
+//#include"../Objects/Enemy/Enemy_O.h"
+
+//敵キャラクターの最大数
+#define MAX_ENEMY_CHARACTOR 200
 
 class Scene
 {
 private:
+	//ゲームオブジェクトを動的配列で管理
 	std::vector<GameObject*> objects;
-	int image;
+
+	int image;	//画像
+
+	int enemy_popcount;	//出現させるキャラをカウント
+	int chara_count;	//キャラ数
+	int t;				//キャラタイプ
+
+	int ballet_c;
 
 public:
-	Scene();
-	~Scene();
+	Scene();	//コンストラクタ
+	~Scene();	//デストラクタ
 
-	void Initialize();
-	void Update();
-	void Draw() const;
-	void Finalize();
+	void Initialize();	//初期化処理
+	void Update();		//更新処理
+	void Draw() const;	//描画処理
+	void Finalize();	//終了時処理
 
-private:
+	//敵の種類をランダムで決める処理
+	void randomchar();	
+
+	//キャラカウントを取得
+	int GetCharaCount() { return this->chara_count; }
+
+public:
 
 	//オブジェクト生成処理
 	template<class T>
@@ -52,5 +70,4 @@ private:
 		//インスタンスのポインタを返却
 		return new_instance;
 	}
-
 };

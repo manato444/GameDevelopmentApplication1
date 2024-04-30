@@ -9,17 +9,17 @@ protected:
 
 private:
 
-	Vector2D location;
-	UI* ui;
+	Vector2D location;	//位置情報
+	UI* ui;				//UI
 
 	int animation[2];		//アニメーション画像
 	int animation_count;	//アニメーション時間
 	int flip_flag;			//反転フラグ
-	int type;
+	int type;				//出現タイプ
 
 public:
-	Hakoteki();
-	~Hakoteki();
+	Hakoteki();		//コンストラクタ
+	~Hakoteki();	//デストラクタ
 
 	virtual void Initialize() override;		//初期化処理
 	virtual void Update() override;			//更新処理

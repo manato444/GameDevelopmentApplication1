@@ -42,8 +42,9 @@ void Hakoteki::Initialize()
 		location = ui->SetEnemyLocation_Type2();
 	}
 	
-	
-	
+	//当たり判定の大きさ
+	//box_size = 64.0f;
+
 	//向きの設定
 	radian = 0.0;
 
@@ -70,6 +71,8 @@ void Hakoteki::Draw() const
 	//画像の描画
 	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
 
+	//__super::Draw();
+	
 	//デバッグ用
 #if _DEBUG
 	//当たり判定の可視化
@@ -84,6 +87,7 @@ void Hakoteki::Draw() const
 		GetColor(255, 0, 0), FALSE);
 
 #endif
+
 }
 
 void Hakoteki::Finalize()
@@ -107,18 +111,18 @@ void Hakoteki::Movement()
 	//flip_flag = TRUE;
 
 	
-	if (type == 1)
+	if (type == 1)	//タイプ1なら右方向に移動させる
 	{
 		velocity.x += GetRand(0.1f)+0.3f;
 		flip_flag = FALSE;
 	}
-	else if (type == 2)
+	else if (type == 2) //タイプ2なら左方向に移動させる
 	{
 		velocity.x += GetRand(-0.1f) + (-0.3f);
 		flip_flag = TRUE;	
 	}
 
-	//画面の外に行ったら無理やり見えなくする
+	//画面の外に行ったら無理やり見えなくする(仮)
 	if (location.x < (scale / scale) - scale / 2.0f)
 	{
 		
@@ -136,7 +140,6 @@ void Hakoteki::Movement()
 		
 	}
 	
-
 	//現在の位置座標に速さを加算する
 	location += velocity;
 }

@@ -36,7 +36,7 @@
     <ClCompile Include="Objects\Enemy\Hakoteki.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Enemy\Enemy_Base.cpp">
+    <ClCompile Include="Objects\Enemy\Enemy_O.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Enemy\Haneteki.cpp">
@@ -77,7 +77,7 @@
     <ClInclude Include="Objects\Enemy\Hakoteki.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Enemy\Enemy_Base.h">
+    <ClInclude Include="Objects\Enemy\Enemy_O.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Enemy\Haneteki.h">

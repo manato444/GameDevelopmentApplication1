@@ -8,6 +8,8 @@ class GameObject
 {
 protected:
 	Vector2D location;	//位置情報
+	Vector2D box_size;
+
 	double scale;		//大きさ
 	double radian;		//向き
 	int image;			//描画する画像
@@ -35,8 +37,12 @@ public:
 	//位置情報変更処理
 	void SetLocation(const Vector2D& location);
 
+	//当たり判定の大きさを取得する
+	Vector2D GetBoxSize() const;
+
+
+	//敵の出現タイプ
 	virtual Vector2D GetEnemyLocation_Type1() { return Vector2D(); }
 	virtual Vector2D GetEnemyLocation_Type2() { return Vector2D(); }
 
-	//void SetLocation();
 };

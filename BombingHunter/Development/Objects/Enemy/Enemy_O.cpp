@@ -1,34 +1,45 @@
+/********************************
+	要らないかも
+
 #include"Hakoteki.h"
 #include"Haneteki.h"
 #include"Harpie.h"
 #include"Kin.h"
 #include"DxLib.h"
-#include"Enemy_Base.h"
+#include"Enemy_O.h"
+#include"../../Scene/Scene.h"
 
-Enemy_B::Enemy_B() :
+Enemy_O::Enemy_O() :
 	enemy_popcount(0),
 	charaCount(0)
 {
+}
+
+Enemy_O::~Enemy_O()
+{
+}
+
+//初期化
+void Enemy_O::Initialize()
+{
+	enemy_popcount = 0;
+	charaCount = 0;
+	
 	chara = new GameObject * [MAX_ENEMY_CHARACTOR];
 	for (int i = 0; i < MAX_ENEMY_CHARACTOR; i++)
 	{
 		chara[i] = nullptr;
 	}
+	
 }
 
-Enemy_B::~Enemy_B()
+void Enemy_O::Initialize(Scene* scene) 
 {
-}
-
-//初期化
-void Enemy_B::Initialize()
-{
-	enemy_popcount = 0;
-	charaCount = 0;
+	this->scene = scene;
 }
 
 //更新処理
-void Enemy_B::Update()
+void Enemy_O::Update()
 {
 	//だいたい2秒ごとに出現させる
 	if (enemy_popcount >= 250)
@@ -59,13 +70,13 @@ void Enemy_B::Update()
 		{
 			chara[charaCount]->SetType(2);
 		}
-		*/
+		*//*
 		chara[charaCount]->Update();
 	}
 }
 
 //描画
-void Enemy_B::Draw() const
+void Enemy_O::Draw() const
 {
 	//最大数までキャラを描画させる
 	for (int i = 0; i < MAX_ENEMY_CHARACTOR; i++)
@@ -79,25 +90,14 @@ void Enemy_B::Draw() const
 }
 
 //終了
-void Enemy_B::Finalize()
+void Enemy_O::Finalize()
 {
 }
 
 //敵の種類をランダムで決める
-void Enemy_B::randomchar()
+void Enemy_O::randomchar()
 {
 
-
-	/*
-	if (GetRand(1) + 1 == 1)
-	{
-		chara[charaCount]->SetType(1);
-	}
-	else if (GetRand(1) + 1 == 2)
-	{
-		chara[charaCount]->SetType(2);
-	}
-	*/
 	//1から100までの乱数を取得
 	int num = rand() % 100 + 1;
 
@@ -106,7 +106,7 @@ void Enemy_B::randomchar()
 		if (charaCount < MAX_ENEMY_CHARACTOR && chara[charaCount] == nullptr)
 		{
 			//ハネテキ
-			chara[charaCount] = new Haneteki;
+			chara[charaCount] = this->scene->CreateObject<Haneteki>(Vector2D());
 			chara[charaCount]->Initialize();
 		}
 	}
@@ -116,7 +116,7 @@ void Enemy_B::randomchar()
 		{
 
 			//ハコテキ
-			chara[charaCount] = new Hakoteki;
+			chara[charaCount] = this->scene->CreateObject<Hakoteki>(Vector2D());
 			chara[charaCount]->Initialize();
 		}
 	}
@@ -125,7 +125,7 @@ void Enemy_B::randomchar()
 		if (charaCount < MAX_ENEMY_CHARACTOR && chara[charaCount] == nullptr)
 		{
 			//ハーピー
-			chara[charaCount] = new Harpie;
+			chara[charaCount] = this->scene->CreateObject<Harpie>(Vector2D());
 			chara[charaCount]->Initialize();
 		}
 	}
@@ -134,14 +134,15 @@ void Enemy_B::randomchar()
 		if (charaCount < MAX_ENEMY_CHARACTOR && chara[charaCount] == nullptr)
 		{
 			//金のテキ
-			chara[charaCount] = new Kin;
+			chara[charaCount] = this->scene->CreateObject<Kin>(Vector2D());
 			chara[charaCount]->Initialize();
 		}
 	}
 }
 
 //キャラクター取得
-GameObject** Enemy_B::GetCharacter(int count)
+GameObject** Enemy_O::GetCharacter(int count)
 {
 	return chara;
 }
+*********************************/

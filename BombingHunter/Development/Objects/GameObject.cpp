@@ -7,7 +7,8 @@ GameObject::GameObject() :
 	radian(0.0f),
 	image(0),
 	sound(0),
-	type(NULL)
+	type(NULL),
+	box_size(0.0f)
 {
 }
 
@@ -30,7 +31,10 @@ void GameObject::Update()
 //•`‰æˆ—
 void GameObject::Draw() const
 {
-	
+	Vector2D tl = location - (box_size / 2.0f);
+	Vector2D br = location + (box_size / 2.0f);
+
+	DrawBoxAA(tl.x, tl.y, br.x, br.y, GetColor(255, 0, 0), FALSE);
 }
 
 //I—¹ˆ—
@@ -42,6 +46,7 @@ void GameObject::Finalize()
 void GameObject::OnHitCollision(GameObject* hit_object)
 {
 	//“–‚½‚Á‚½Žž‚És‚¤ˆ—
+	delete hit_object;
 
 }
 
@@ -55,4 +60,10 @@ Vector2D GameObject::GetLocation() const
 void GameObject::SetLocation(const Vector2D& location)
 {
 	this->location = location;
+}
+
+//“–‚½‚è”»’è‚Ì‘å‚«‚³Žæ“¾
+Vector2D GameObject::GetBoxSize() const
+{
+	return box_size;
 }

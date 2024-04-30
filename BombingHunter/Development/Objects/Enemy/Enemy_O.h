@@ -1,12 +1,13 @@
+/*
 #pragma once
 
 #include"../GameObject.h"
 
 //敵キャラクターの最大数
-#define MAX_ENEMY_CHARACTOR 500
+#define MAX_ENEMY_CHARACTOR 20
 
 //敵を出現させるベースクラス
-class Enemy_B : public GameObject 
+class Enemy_O : public GameObject 
 {
 private:
 
@@ -19,14 +20,15 @@ private:
 	int t;
 
 	GameObject** chara;
-
+	class Scene* scene;
 
 
 public:
-	Enemy_B();	//コンストラクタ
-	~Enemy_B();	//デストラクタ
+	Enemy_O();	//コンストラクタ
+	~Enemy_O();	//デストラクタ
 
 	virtual void Initialize() override;		//初期化処理
+	virtual void Initialize(class Scene* scene);		//初期化処理
 	virtual void Update() override;			//更新処理
 	virtual void Draw() const override;		//描画処理
 	virtual void Finalize() override;
@@ -38,3 +40,4 @@ public:
 	GameObject** GetCharacter(int count);
 
 };
+*/
