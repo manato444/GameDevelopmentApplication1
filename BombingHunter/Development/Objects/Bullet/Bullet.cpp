@@ -2,7 +2,7 @@
 #include"DxLib.h"
 
 Bullet::Bullet() :
-	animation_count(0), flip_flag(FALSE)// type(NULL)
+	animation_count(0), flip_flag(NULL)// type(NULL)
 {
 	animation[0] = NULL;
 	//animation[1] = NULL;
@@ -54,7 +54,7 @@ void Bullet::Update()
 void Bullet::Draw() const
 {
 	//プレイヤー画像の描画
-	DrawRotaGraphF(location.x, location.y, 1.0, PI / 2, image, TRUE, flip_flag);
+	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
 
 	//デバッグ用
 #if _DEBUG
@@ -87,12 +87,30 @@ void Bullet::OnHitCollision(GameObject* hit_object)
 void Bullet::Movement()
 {
 
+
 	//移動の速さ
 	Vector2D velocity = 0.0f;
 
-
+	//radian += DX_PI_F / 2
 	velocity.y += 0.5f;
 	flip_flag = FALSE;
+	//flip_flag = TRUE;
+
+
+	//フレームカウントを加算する
+	animation_count++;
+
+	//1フレームごとに回転させる
+	if (animation_count >= 3)
+	{
+		//カウントリセット
+		animation_count = 0;
+
+		if (radian != DX_PI_F / 2)
+		{
+			radian += DX_PI_F / 180;
+		}
+	}
 
 	/*
 	if (type == 1)
@@ -110,33 +128,18 @@ void Bullet::Movement()
 
 	//現在の位置座標に速さを加算する
 	location += velocity;
-}
-
-
-/*
-void Bullet::AnimeControl()
-{
-	//フレームカウントを加算する
-	animation_count++;
-
-	//60フレーム目に到達したら
-	if (animation_count >= 60)
+	/*
+	if (flip_flag == FALSE)
 	{
-		//カウントリセット
-		animation_count = 0;
-
-		//画像の切り替え
-		if (image == animation[0])
-		{
-			image = animation[1];
-		}
-		else
-		{
-			image = animation[0];
-		}
+	location += velocity.x += 0.5f;
 	}
+	else if(flip_flag == TRUE)
+	{
+		location -= velocity.x -= 0.5f;
+	}
+	*/
 }
-*/
+
 
 Vector2D Bullet::GetLocation() const
 {

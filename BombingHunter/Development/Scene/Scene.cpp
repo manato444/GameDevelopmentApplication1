@@ -1,10 +1,11 @@
 #include"Scene.h"
 #include"DxLib.h"
 
+//プレイヤー
 #include"../Objects/Player/Player.h"
 #include"../Objects/Bullet/Bullet.h"
-//#include"../Objects/Enemy/Enemy_O.h"
 
+//敵
 #include"../Objects/Enemy/Hakoteki.h"
 #include"../Objects/Enemy/Haneteki.h"
 #include"../Objects/Enemy/Harpie.h"
@@ -12,9 +13,9 @@
 
 //コンストラクタ
 Scene::Scene() : 
-				objects(), image(NULL),
-				enemy_popcount(0),
-				chara_count(0)
+objects(), image(NULL),
+enemy_popcount(0),
+chara_count(0)
 {
 }
 
@@ -39,18 +40,13 @@ void Scene::Initialize()
 void Scene::Update()
 {
 	//だいたい２秒ごとに敵を生成
-	if (enemy_popcount >= 250)
-	{
-		//敵の出現タイプを乱数で取得
-		t = GetRand(1) + 1;
+	if (enemy_popcount >= 250){
 
-		//敵の種類をランダムで決めて生成
-		randomchar();
-
-		enemy_popcount = 0;
+		t = GetRand(1) + 1;	//敵の出現タイプを乱数で取得
+		randomchar();		//敵の種類をランダムで決めて生成
+		enemy_popcount = 0;		
 	}
-	else
-	{
+	else{
 		enemy_popcount++;
 	}
 
@@ -104,10 +100,13 @@ void Scene::Finalize()
 void Scene::randomchar()
 {
 
+
+
+
 	//1から100までの乱数を取得
 	int num = rand() % 100 + 1;
 
-	if (num <= 60)
+	if (num <= 50)
 	{
 		if (chara_count < MAX_ENEMY_CHARACTOR)
 		{

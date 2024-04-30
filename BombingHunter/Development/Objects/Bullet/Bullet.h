@@ -1,12 +1,14 @@
 #pragma once
 
 #include"../GameObject.h"
+#include"../Player/Player.h"
 
 #define PI    3.1415926535897932384626433832795f
 
 class Bullet : public GameObject
 {
 private:
+
 	int animation[2];		//アニメーション画像
 	int animation_count;	//アニメーション時間
 	int flip_flag;			//反転フラグ
@@ -30,7 +32,7 @@ private:
 	void Movement();
 
 	//アニメーション制御
-	//void AnimeControl();
+	void AnimeControl();
 
 	//位置情報取得処理
 	Vector2D GetLocation() const;

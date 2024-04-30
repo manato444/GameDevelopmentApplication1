@@ -138,7 +138,6 @@
     <ClCompile Include="AppMain.cpp" />
     <ClCompile Include="Objects\Bullet\Bullet.cpp" />
     <ClCompile Include="Objects\Bullet\BulletManager.cpp" />
-    <ClCompile Include="Objects\Enemy\Enemy_O.cpp" />
     <ClCompile Include="Objects\Enemy\Hakoteki.cpp" />
     <ClCompile Include="Objects\Enemy\Haneteki.cpp" />
     <ClCompile Include="Objects\Enemy\Harpie.cpp" />
@@ -153,7 +152,6 @@
   <ItemGroup>
     <ClInclude Include="Objects\Bullet\Bullet.h" />
     <ClInclude Include="Objects\Bullet\BulletManager.h" />
-    <ClInclude Include="Objects\Enemy\Enemy_O.h" />
     <ClInclude Include="Objects\Enemy\Hakoteki.h" />
     <ClInclude Include="Objects\Enemy\Haneteki.h" />
     <ClInclude Include="Objects\Enemy\Harpie.h" />
