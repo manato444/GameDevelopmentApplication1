@@ -25,11 +25,23 @@ void Haneteki::Initialize()
 	}
 
 	
-	location.x = 10.0f;
-	location.y = 300.0f;
-	
-	ui = new UI;
+	//location.x = 10.0f;
+	//location.y = 300.0f;
 	//location = ui->GetEnemyLocation_Type1();
+
+	ui = new UI;
+
+	type = GetRand(1) + 1;
+	if (type == 1)
+	{
+		//location = ui->SetEnemyLocation_Type1();
+		location = One_Type_Location();
+	}
+	else if (type == 2)
+	{
+		//location = ui->SetEnemyLocation_Type2();
+		location = Two_Type_Location();
+	}
 
 	//Œü‚«‚ÌÝ’è
 	radian = 0.0;
@@ -90,22 +102,23 @@ void Haneteki::Movement()
 	//ˆÚ“®‚Ì‘¬‚³
 	Vector2D velocity = 0.0f;
 	
-	
+	/*
 	velocity.x += 0.5f;
 	flip_flag = FALSE;
+	*/
+
 	
-	/*
 	if (type == 1)
 	{
-		velocity += -2.0f;
-		flip_flag = TRUE;
+		velocity.x += 0.8f;
+		flip_flag = FALSE;
 	}
 	else if (type == 2)
 	{
-		velocity += 2.0f;	
-		flip_flag = FALSE;
+		velocity.x -= 0.8f;	
+		flip_flag = TRUE;
 	}
-	*/
+	
 	
 
 	//Œ»Ý‚ÌˆÊ’uÀ•W‚É‘¬‚³‚ð‰ÁŽZ‚·‚é
@@ -143,6 +156,15 @@ Vector2D Haneteki::GetLocation() const
 void Haneteki::SetLocation(const Vector2D& location)
 {
 	this->location = location;
+}
+
+Vector2D Haneteki::One_Type_Location()
+{
+	return Vector2D(60, 300);
+}
+Vector2D Haneteki::Two_Type_Location()
+{
+	return Vector2D(600, 300);
 }
 
 void Haneteki::SetLocation()

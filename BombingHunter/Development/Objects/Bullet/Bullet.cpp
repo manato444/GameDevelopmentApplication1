@@ -23,11 +23,7 @@ void Bullet::Initialize()
 	{
 		throw("爆弾の画像がありません\n");
 	}
-
-
-	location.x = 320.0f;
-	location.y = 10.0f;
-
+	
 	//ui = new UI;
 	//location = ui->GetEnemyLocation_Type1();
 
@@ -39,11 +35,13 @@ void Bullet::Initialize()
 
 	//初期画像の設定
 	image = animation[0];
+
+	//当たり判定の大きさ
+	box_size = Vector2D(32.0f, 32.0f);
 }
 
 void Bullet::Update()
 {
-
 	//移動処理
 	Movement();
 
@@ -53,9 +51,11 @@ void Bullet::Update()
 
 void Bullet::Draw() const
 {
-	//プレイヤー画像の描画
-	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
 
+	//Bullet画像の描画
+	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
+	__super::Draw();
+	/*
 	//デバッグ用
 #if _DEBUG
 	//当たり判定の可視化
@@ -70,6 +70,7 @@ void Bullet::Draw() const
 		GetColor(255, 0, 0), FALSE);
 
 #endif
+*/
 }
 
 void Bullet::Finalize()
@@ -82,14 +83,12 @@ void Bullet::Finalize()
 void Bullet::OnHitCollision(GameObject* hit_object)
 {
 	//当たった時の処理
+	velocity = 0.0f;
 }
 
 void Bullet::Movement()
 {
-
-
-	//移動の速さ
-	Vector2D velocity = 0.0f;
+	velocity = 0.0f;
 
 	//radian += DX_PI_F / 2
 	velocity.y += 0.5f;
@@ -105,26 +104,10 @@ void Bullet::Movement()
 	{
 		//カウントリセット
 		animation_count = 0;
-
-		if (radian != DX_PI_F / 2)
-		{
+		
 			radian += DX_PI_F / 180;
-		}
+		
 	}
-
-	/*
-	if (type == 1)
-	{
-		velocity += -2.0f;
-		flip_flag = TRUE;
-	}
-	else if (type == 2)
-	{
-		velocity += 2.0f;
-		flip_flag = FALSE;
-	}
-	*/
-
 
 	//現在の位置座標に速さを加算する
 	location += velocity;
@@ -140,7 +123,7 @@ void Bullet::Movement()
 	*/
 }
 
-
+/*
 Vector2D Bullet::GetLocation() const
 {
 	return this->location;
@@ -150,17 +133,4 @@ void Bullet::SetLocation(const Vector2D& location)
 {
 	this->location = location;
 }
-
-void Bullet::SetLocation()
-{
-	if (type == 1)
-	{
-		location.x = 10.0f;
-		location.y = 400.0f;
-	}
-	else if (type == 2)
-	{
-		location.x = 600.0f;
-		location.y = 400.0f;
-	}
-}
+*/

@@ -92,5 +92,8 @@
     <ClInclude Include="Objects\Bullet\Bullet.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Utility\UserTemplate.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

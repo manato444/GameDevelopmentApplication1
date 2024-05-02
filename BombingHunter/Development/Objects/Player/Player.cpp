@@ -35,6 +35,8 @@ void Player::Initialize()
 
 	//初期画像の設定
 	image = animation[0];
+
+	box_size = Vector2D(64.0f);
 }
 
 //更新処理
@@ -52,11 +54,13 @@ void Player::Draw()const
 {
 
 	//DrawExtendGraph(1, 1, 1, 1, image, FALSE);
-
+	
 	//プレイヤー画像の描画
 	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
+	__super::Draw();
 
 	//デバッグ用
+	/*
 #if _DEBUG
 	//当たり判定の可視化
 	Vector2D box_collision_upper_left = location - (Vector2D(1.0f) *
@@ -70,6 +74,7 @@ void Player::Draw()const
 		GetColor(255, 0, 0), FALSE);
 
 #endif
+*/
 }
 
 //終了処理
@@ -131,7 +136,7 @@ void Player::AnimeControl()
 	animation_count++;
 
 	//60フレーム目に到達したら
-	if (animation_count >= 60)
+	if (animation_count >= 30)
 	{
 		//カウントリセット
 		animation_count = 0;
@@ -139,14 +144,10 @@ void Player::AnimeControl()
 		//画像の切り替え
 		if (image == animation[0])
 		{
-			//虹色関数
-			//GraphFilter(image, DX_GRAPH_FILTER_HSB, 0, 5, 8, 0);
 			image = animation[1];
 		}
 		else
 		{
-			//虹色関数
-			//GraphFilter(image, DX_GRAPH_FILTER_HSB, 0, 5, 8, 0);
 			image = animation[0];
 		}
 	}

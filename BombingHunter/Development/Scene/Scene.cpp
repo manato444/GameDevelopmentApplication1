@@ -11,6 +11,9 @@
 #include"../Objects/Enemy/Harpie.h"
 #include"../Objects/Enemy/Kin.h"
 
+Hakoteki* hakoteki;
+
+
 //コンストラクタ
 Scene::Scene() : 
 objects(), image(NULL),
@@ -42,23 +45,33 @@ void Scene::Update()
 	//だいたい２秒ごとに敵を生成
 	if (enemy_popcount >= 250){
 
-		t = GetRand(1) + 1;	//敵の出現タイプを乱数で取得
-		randomchar();		//敵の種類をランダムで決めて生成
+		randomchar();		//敵の種類をランダムで決めて生成	
 		enemy_popcount = 0;		
 	}
 	else{
 		enemy_popcount++;
 	}
 
+	//スペースキーでBulletを生成
 	if (InputControl::GetKeyDown(KEY_INPUT_SPACE))
 	{
-		CreateObject<Bullet>(Vector2D(320.0f, 50.0f));
+		CreateObject<Bullet>(Vector2D(320.0f, 50.0f));	
 	}
 
 	//シーンに存在するオブジェクトの更新処理
 	for (GameObject* obj : objects)
 	{
 		obj->Update();
+	}
+
+	//オブジェクト同士の当たり判定チェック
+	for (int i = 0; i < objects.size(); i++)
+	{
+		for (int j = i + 1; j < objects.size(); j++)
+		{
+			//当たり判定チェック処理
+			HitCheckObject(objects[i], objects[j]);
+		}
 	}
 }
 
@@ -99,9 +112,7 @@ void Scene::Finalize()
 //敵の種類をランダムで決めて生成する処理
 void Scene::randomchar()
 {
-
-
-
+	
 
 	//1から100までの乱数を取得
 	int num = rand() % 100 + 1;
@@ -119,7 +130,7 @@ void Scene::randomchar()
 		if (chara_count < MAX_ENEMY_CHARACTOR)
 		{
 			//ハコテキを生成
-			CreateObject<Hakoteki>(Vector2D(0.0f, 00.0f));
+			CreateObject<Hakoteki>(Vector2D(0.0f, 0.0f));
 		}
 	}
 	else if (num <= 90)
@@ -137,5 +148,23 @@ void Scene::randomchar()
 			//金のテキを生成
 			CreateObject<Kin>(Vector2D(0.0f, 0.0f));
 		}
+	}
+}
+
+
+//当たり判定チェック処理(矩形の中心で当たり判定をとる)
+void Scene::HitCheckObject(GameObject* a, GameObject* b)
+{
+	//2つのオブジェクトの距離を取得
+	Vector2D diff = a->GetLocation() - b->GetLocation();
+
+	//2つのオブジェクトの当たり判定の大きさを取得
+	Vector2D box_size = (a->GetBoxSize() + b->GetBoxSize()) / 2.0f;
+
+	if ((fabsf(diff.x) < box_size.x) && (fabs(diff.y) < box_size.y))
+	{
+		//当たったことをオブジェクトに通知する
+		a->OnHitCollision(b);
+		b->OnHitCollision(a);
 	}
 }

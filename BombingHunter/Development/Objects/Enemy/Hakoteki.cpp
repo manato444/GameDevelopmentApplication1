@@ -2,18 +2,17 @@
 #include"DxLib.h"
 
 Hakoteki::Hakoteki():
-	animation_count(0), flip_flag(FALSE),type(NULL)
+	animation_count(0), flip_flag(NULL),type(NULL)
 {
-
 	animation[0] = NULL;
 	animation[1] = NULL;
-
 }
 
 Hakoteki::~Hakoteki()
 {
 }
 
+//初期化処理
 void Hakoteki::Initialize()
 {
 	//画像の読み込み
@@ -26,25 +25,18 @@ void Hakoteki::Initialize()
 		throw("ハコテキ画像がありません\n");
 	}
 
-	ui = new UI;
-
-	//location.x = 30.0f;
-	//location.y = 400.0f;
-
+	//出現タイプを乱数で取得(スポーン位置の設定)
 	type = GetRand(1) + 1;
 
-	if (type == 1)
-	{
-		location = ui->SetEnemyLocation_Type1();
+	if (type == 1)	{
+		//スポーン位置を【左】に設定
+		location = One_Type_Location();
 	}
-	else if (type == 2)
-	{
-		location = ui->SetEnemyLocation_Type2();
+	else if (type == 2){
+		//スポーン位置を【右】に設定
+		location = Two_Type_Location();
 	}
 	
-	//当たり判定の大きさ
-	//box_size = 64.0f;
-
 	//向きの設定
 	radian = 0.0;
 
@@ -53,6 +45,10 @@ void Hakoteki::Initialize()
 
 	//初期画像の設定
 	image = animation[0];
+	
+	//当たり判定の大きさ
+	box_size = 64.0f;
+
 }
 
 void Hakoteki::Update()
@@ -68,7 +64,7 @@ void Hakoteki::Update()
 void Hakoteki::Draw() const
 {
 	
-	//画像の描画
+	//画像の描画	
 	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
 
 	//__super::Draw();
@@ -87,9 +83,9 @@ void Hakoteki::Draw() const
 		GetColor(255, 0, 0), FALSE);
 
 #endif
-
 }
 
+//終了時処理
 void Hakoteki::Finalize()
 {
 	//使用した画像を解放する
@@ -97,53 +93,49 @@ void Hakoteki::Finalize()
 	DeleteGraph(animation[1]);
 }
 
+//当たり判定通知処理
 void Hakoteki::OnHitCollision(GameObject* hit_object)
 {
 	//当たった時の処理
+	velocity = 0.0f;
 }
 
+//移動処理
 void Hakoteki::Movement()
 {
-
 	//移動の速さ
-	Vector2D velocity = 0.0f;
-	//velocity.x += 0.5f;
-	//flip_flag = TRUE;
+	velocity = 0.0f;
 
-	
-	if (type == 1)	//タイプ1なら右方向に移動させる
+	if (type == 1) 	//タイプ1なら右方向に移動させる
 	{
-		velocity.x += GetRand(0.1f)+0.3f;
+		velocity.x += 0.3f;
 		flip_flag = FALSE;
 	}
 	else if (type == 2) //タイプ2なら左方向に移動させる
 	{
-		velocity.x += GetRand(-0.1f) + (-0.3f);
-		flip_flag = TRUE;	
+		velocity.x -= 0.3f;
+		flip_flag = TRUE;
 	}
-
+	
 	//画面の外に行ったら無理やり見えなくする(仮)
 	if (location.x < (scale / scale) - scale / 2.0f)
 	{
-		
-		velocity.x = 0.0f;
-		location.x = scale *(-scale);
-		DeleteGraph(image);
-		
+		velocity.x = 0.0f;	//停止させる
+		location.x = scale *(-scale);	//画面外に無理やりどかす（仮）
+		DeleteGraph(image);		//画像の削除
 	}
 	else if ((640.0f + scale) < location.x)
 	{
-		
 		velocity.x = 0.0f;
 		location.x = 640.0f + (scale * 2);
-		DeleteGraph(image);
-		
+		DeleteGraph(image);	
 	}
 	
 	//現在の位置座標に速さを加算する
 	location += velocity;
 }
 
+//アニメーション制御
 void Hakoteki::AnimeControl()
 {
 	//フレームカウントを加算する
@@ -156,12 +148,12 @@ void Hakoteki::AnimeControl()
 		animation_count = 0;
 
 		//画像の切り替え
-		if (image == animation[0])
-		{
+		if (image == animation[0]){
+
 			image = animation[1];
 		}
-		else
-		{
+		else{
+
 			image = animation[0];
 		}
 	}
@@ -179,17 +171,19 @@ void Hakoteki::SetLocation(const Vector2D& location)
 	this->location = location;
 }
 
+//キャラタイプをセット
 void Hakoteki::SetType(int type)
 {
 	this->type = type;
 }
 
-Vector2D Hakoteki::GetEnemyLocation_Type1()
+//出現パターンをセット(タイプ1 : 左から出現させる)
+Vector2D Hakoteki::One_Type_Location()
 {
-	return this->location;
+	return Vector2D(60, 400);
 }
-
-Vector2D Hakoteki::GetEnemyLocation_Type2()
+//出現パターンをセット(タイプ2 : 右から出現させる)
+Vector2D Hakoteki::Two_Type_Location()
 {
-	return this->location;
+	return Vector2D(600, 400);
 }

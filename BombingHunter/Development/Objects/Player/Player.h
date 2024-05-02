@@ -29,4 +29,6 @@ private:
 
 	//アニメーション制御
 	void AnimeControl();
+
+
 };

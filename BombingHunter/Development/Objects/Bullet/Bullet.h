@@ -3,11 +3,13 @@
 #include"../GameObject.h"
 #include"../Player/Player.h"
 
-#define PI    3.1415926535897932384626433832795f
 
 class Bullet : public GameObject
 {
 private:
+
+	//移動の速さ
+	Vector2D velocity;
 
 	int animation[2];		//アニメーション画像
 	int animation_count;	//アニメーション時間
@@ -32,13 +34,12 @@ private:
 	void Movement();
 
 	//アニメーション制御
-	void AnimeControl();
+	//void AnimeControl();
 
 	//位置情報取得処理
-	Vector2D GetLocation() const;
+	//Vector2D GetLocation() const;
 
 	//位置情報変更処理
-	void SetLocation(const Vector2D& locartion);
+	//void SetLocation(const Vector2D& locartion);
 
-	void SetLocation();
 };

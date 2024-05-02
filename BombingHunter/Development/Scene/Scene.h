@@ -4,7 +4,7 @@
 #include<string>
 #include"../Objects/GameObject.h"
 #include"../Utility/InputControl.h"
-//#include"../Objects/Enemy/Enemy_O.h"
+#include"../Objects/UI/UI.h"
 
 //敵キャラクターの最大数
 #define MAX_ENEMY_CHARACTOR 200
@@ -19,8 +19,7 @@ private:
 
 	int enemy_popcount;	//出現させるキャラをカウント
 	int chara_count;	//キャラ数
-	int t;				//キャラタイプ
-
+	//int t;				//キャラタイプ
 	int ballet_c;
 
 public:
@@ -38,7 +37,13 @@ public:
 	//キャラカウントを取得
 	int GetCharaCount() { return this->chara_count; }
 
+	// UI* ui;
+	
+
 public:
+
+	//当たり判定チェック処理
+	void HitCheckObject(GameObject* a, GameObject* b);
 
 	//オブジェクト生成処理
 	template<class T>

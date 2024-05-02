@@ -8,14 +8,15 @@ protected:
 
 
 private:
-
+	Vector2D velocity;
 	Vector2D location;	//位置情報
-	UI* ui;				//UI
+	//UI* ui;				//UI
 
 	int animation[2];		//アニメーション画像
 	int animation_count;	//アニメーション時間
 	int flip_flag;			//反転フラグ
 	int type;				//出現タイプ
+
 
 public:
 	Hakoteki();		//コンストラクタ
@@ -28,6 +29,9 @@ public:
 
 	//当たり判定通知処理
 	virtual void OnHitCollision(GameObject* hit_object) override;
+
+	Vector2D One_Type_Location();
+	Vector2D Two_Type_Location();
 
 private:
 	//移動処理
@@ -43,7 +47,5 @@ private:
 	void SetLocation(const Vector2D& locartion);
 
 	virtual void SetType(int type) override;
-	virtual Vector2D GetEnemyLocation_Type1() override;
-	virtual Vector2D GetEnemyLocation_Type2() override;
 
 };

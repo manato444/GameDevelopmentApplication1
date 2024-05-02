@@ -17,7 +17,7 @@ private:
 	int animation_count;	//アニメーション時間
 	int flip_flag;			//反転フラグ
 
-	//敵かプレイヤーか{ 1:プレイヤー, 2: 敵 }
+	
 	int type;
 
 public:
@@ -46,5 +46,8 @@ private:
 	void SetLocation(const Vector2D& locartion);
 
 	void SetLocation();
+
+	Vector2D One_Type_Location();
+	Vector2D Two_Type_Location();
 
 };

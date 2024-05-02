@@ -3,6 +3,9 @@
 #include "../Utility/Vector2D.h"
 #include"UI/UI.h"
 
+
+#define D_PIVOT_CENTER
+
 //ゲームオブジェクト基底クラス
 class GameObject
 {
@@ -45,4 +48,5 @@ public:
 	virtual Vector2D GetEnemyLocation_Type1() { return Vector2D(); }
 	virtual Vector2D GetEnemyLocation_Type2() { return Vector2D(); }
 
+	//int Set_T();
 };
