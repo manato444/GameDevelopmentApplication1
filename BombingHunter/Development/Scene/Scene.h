@@ -6,6 +6,7 @@
 #include"../Utility/InputControl.h"
 #include"../Objects/UI/UI.h"
 
+
 //敵キャラクターの最大数
 #define MAX_ENEMY_CHARACTOR 200
 
@@ -15,12 +16,19 @@ private:
 	//ゲームオブジェクトを動的配列で管理
 	std::vector<GameObject*> objects;
 
+	
+
 	int image;	//画像
+	int f_image;
 
 	int enemy_popcount;	//出現させるキャラをカウント
 	int chara_count;	//キャラ数
-	//int t;				//キャラタイプ
-	int ballet_c;
+	//int type;				//キャラタイプ
+
+	int bx;	//背景の描画位置
+
+	//Vector2D One_Type_Location();
+	//Vector2D Two_Type_Location();
 
 public:
 	Scene();	//コンストラクタ

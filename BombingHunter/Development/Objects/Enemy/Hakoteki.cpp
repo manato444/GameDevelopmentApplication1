@@ -16,8 +16,10 @@ Hakoteki::~Hakoteki()
 void Hakoteki::Initialize()
 {
 	//画像の読み込み
-	animation[0] = LoadGraph("image/ハコテキ/ハコテキ1.png");
-	animation[1] = LoadGraph("image/ハコテキ/ハコテキ2.png");
+	//animation[0] = LoadGraph("image/ハコテキ/ハコテキ1.png");
+	//animation[1] = LoadGraph("image/ハコテキ/ハコテキ2.png");
+	animation[0] = LoadGraph("image/ハコテキ/Hako.bmp");
+	animation[1] = LoadGraph("image/ハコテキ/Hako.bmp");
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
@@ -98,6 +100,7 @@ void Hakoteki::OnHitCollision(GameObject* hit_object)
 {
 	//当たった時の処理
 	velocity = 0.0f;
+	location = location;
 }
 
 //移動処理

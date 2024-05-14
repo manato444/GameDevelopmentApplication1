@@ -18,8 +18,11 @@ Player::~Player()
 void Player::Initialize()
 {
 	//画像の読み込み
-	animation[0] = LoadGraph("image/トリパイロット/飛ぶ1.png");
-	animation[1] = LoadGraph("image/トリパイロット/飛ぶ2.png");
+	//animation[0] = LoadGraph("image/トリパイロット/飛ぶ1.png");
+	//animation[1] = LoadGraph("image/トリパイロット/飛ぶ2.png");
+	animation[0] = LoadGraph("image/トリパイロット/Player.bmp");
+	animation[1] = LoadGraph("image/トリパイロット/Player.bmp");
+
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
@@ -28,10 +31,10 @@ void Player::Initialize()
 	}
 
 	//向きの設定
-	radian = 0.0;
+	radian = 0.0f;
 
 	//大きさの設定
-	scale = 64.0;
+	scale = 64.0f;
 
 	//初期画像の設定
 	image = animation[0];
@@ -107,6 +110,16 @@ void Player::Movement()
 	{
 		velocity.x += 2.0f;
 		flip_flag = FALSE;
+	}
+	else if (InputControl::GetKey(KEY_INPUT_UP))
+	{
+		velocity.y -= 2.0f;
+		//flip_flag = FALSE;
+	}
+	else if (InputControl::GetKey(KEY_INPUT_DOWN))
+	{
+		velocity.y += 2.0f;
+		//flip_flag = FALSE;
 	}
 	else
 	{

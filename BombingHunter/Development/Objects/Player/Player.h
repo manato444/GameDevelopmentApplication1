@@ -2,11 +2,12 @@
 
 
 #include"../GameObject.h"
-
+#include"../Bullet/Bullet.h"
 
 class Player : public GameObject
 {
 private:
+
 	int animation[2];		//アニメーション画像
 	int animation_count;	//アニメーション時間
 	int flip_flag;			//反転フラグ
@@ -30,5 +31,5 @@ private:
 	//アニメーション制御
 	void AnimeControl();
 
-
+	//Vector2D GetLocation();
 };

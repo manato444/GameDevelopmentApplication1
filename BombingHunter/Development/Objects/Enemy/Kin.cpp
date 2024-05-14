@@ -20,11 +20,18 @@ Kin::~Kin()
 void Kin::Initialize()
 {
 	//画像の読み込み
+	/*
 	animation[0] = LoadGraph("image/金のテキ/1.png");
 	animation[1] = LoadGraph("image/金のテキ/2.png");
 	animation[2] = LoadGraph("image/金のテキ/3.png");
 	animation[3] = LoadGraph("image/金のテキ/4.png");
 	animation[4] = LoadGraph("image/金のテキ/5.png");
+	*/
+	animation[0] = LoadGraph("image/金のテキ/Kin.bmp");
+	animation[1] = LoadGraph("image/金のテキ/Kin.bmp");
+	animation[2] = LoadGraph("image/金のテキ/Kin.bmp");
+	animation[3] = LoadGraph("image/金のテキ/Kin.bmp");
+	animation[4] = LoadGraph("image/金のテキ/Kin.bmp");
 
 
 	//エラーチェック
