@@ -16,10 +16,13 @@ void Bullet::Initialize()
 {
 	//画像の読み込み
 	//animation[0] = LoadGraph("image/爆弾/爆弾.png");
-	animation[0] = LoadGraph("image/爆弾/Bullet.bmp");
+	//animation[0] = LoadGraph("image/爆弾/Bullet.bmp");
+	animation[0] = LoadGraph("image/爆弾/bl1.png");
+	animation[1] = LoadGraph("image/爆弾/bl2.png");
+
 
 	//エラーチェック
-	if (animation[0] == -1)//|| animation[1] == -1)
+	if (animation[0] == -1 || animation[1] == -1)
 	{
 		throw("爆弾の画像がありません\n");
 	}
@@ -28,7 +31,7 @@ void Bullet::Initialize()
 	//location = ui->GetEnemyLocation_Type1();
 
 	//向きの設定
-	radian = 0.0;
+	radian = DX_PI_F;
 
 	//大きさの設定
 	scale = 64.0;
@@ -37,7 +40,7 @@ void Bullet::Initialize()
 	image = animation[0];
 
 	//当たり判定の大きさ
-	box_size = Vector2D(16.0f, 32.0f);
+	box_size = Vector2D(14.5f, 50.0f);
 }
 
 void Bullet::Update()
@@ -46,7 +49,7 @@ void Bullet::Update()
 	Movement();
 
 	//アニメーション制御
-	//AnimeControl();
+	AnimeControl();
 }
 
 void Bullet::Draw() const
@@ -54,7 +57,8 @@ void Bullet::Draw() const
 
 	//Bullet画像の描画
 	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
-	__super::Draw();
+	//__super::Draw();
+
 	/*
 	//デバッグ用
 #if _DEBUG
@@ -77,24 +81,24 @@ void Bullet::Finalize()
 {
 	//使用した画像を解放する
 	DeleteGraph(animation[0]);
-	//DeleteGraph(animation[1]);
+	DeleteGraph(animation[1]);
 }
 
 void Bullet::OnHitCollision(GameObject* hit_object)
 {
 	//当たった時の処理
-	velocity = 0.0f;
+	//velocity = 0.0f;
 }
 
 void Bullet::Movement()
 {
 	velocity = 0.0f;
 
-	//radian += DX_PI_F / 2
-	velocity.y += 3.0f;
+	//radian += DX_PI_F / 2;
+	velocity.y += 3.2f;
 	flip_flag = FALSE;
 	//flip_flag = TRUE;
-	radian = DX_PI_F / 60;
+	//radian = DX_PI_F / 60;
 
 	//フレームカウントを加算する
 	animation_count++;
@@ -134,3 +138,27 @@ void Bullet::SetLocation(const Vector2D& location)
 	this->location = location;
 }
 */
+
+//アニメーション制御
+void Bullet::AnimeControl()
+{
+	//フレームカウントを加算する
+	animation_count++;
+
+	//60フレーム目に到達したら
+	if (animation_count >= 20)
+	{
+		//カウントリセット
+		animation_count = 0;
+
+		//画像の切り替え
+		if (image == animation[0]) {
+
+			image = animation[1];
+		}
+		else {
+
+			image = animation[0];
+		}
+	}
+}

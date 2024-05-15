@@ -34,7 +34,7 @@ private:
 	void Movement();
 
 	//アニメーション制御
-	//void AnimeControl();
+	void AnimeControl();
 
 	//位置情報取得処理
 	//Vector2D GetLocation() const;

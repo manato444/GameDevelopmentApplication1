@@ -38,7 +38,7 @@ void Scene::Initialize()
 
 	//背景を描画
 	//image = LoadGraph("image/背景/背景1.png"); //	爆撃ハンター用背景
-	//f_image = LoadGraph("image/背景/フレーム.png");	//枠(?)
+	f_image = LoadGraph("image/背景/フレーム.png");	//枠(?)
 	image = LoadGraph("image/背景/space.bmp");	//宇宙背景
 
 	//出現タイプを乱数で取得(スポーン位置の設定)
@@ -80,6 +80,9 @@ void Scene::Update()
 		}
 	}
 
+	//Bullet画面外チェック
+	//Check_OffScreen();
+
 	//シーンに存在するオブジェクトの更新処理
 	for (GameObject* obj : objects)
 	{
@@ -91,8 +94,14 @@ void Scene::Update()
 	{
 		for (int j = i + 1; j < objects.size(); j++)
 		{
-			//当たり判定チェック処理
-			HitCheckObject(objects[i],objects[j]);
+			if (!(dynamic_cast<Haneteki*>(objects[i]) == nullptr))
+			{
+				if (!(dynamic_cast<Bullet*>(objects[j]) == nullptr))
+				{
+					//当たり判定チェック処理
+					HitCheckObject(objects[i], objects[j]);
+				}
+			}
 		}
 	}
 	
@@ -108,7 +117,7 @@ void Scene::Draw() const
 	DrawGraph(0, bx % 480, image, TRUE);
 	DrawGraph(0, bx % 480 - 480, image, TRUE);
 
-	//DrawGraph(0, 0, f_image, TRUE);
+	DrawGraph(0, 0, f_image, TRUE);
 
 
 	//シーンに存在するオブジェクトの描画処理
@@ -204,9 +213,38 @@ void Scene::HitCheckObject(GameObject* a, GameObject* b)
 		//当たったことをオブジェクトに通知する
 		a->OnHitCollision(b);
 		b->OnHitCollision(a);
+
+		//要素の削除
+		objects.erase(objects.begin() + 1);
+
 	}
-	
 }
+
+/*
+//画面外処理
+void Scene::Check_OffScreen()
+{
+	//変数定義
+	Vector2D bl;
+
+	//配列にBulletがいるかひとつずつチェックする
+	for (int i = 0; i < objects.size(); i++)
+	{
+		//Bulletがいたら位置情報を取得
+		if (!(dynamic_cast<Bullet*>(objects[i]) == nullptr))
+		{
+			bl = objects[i]->GetLocation();
+
+			if (bl.y > 380.0f)
+			{
+				//要素の削除
+				this->objects.erase(objects.begin() + 1);
+			}
+		}
+	}
+}
+*/
+
 
 /*
 //出現パターンをセット(タイプ1 : 左から出現させる)
@@ -220,3 +258,4 @@ Vector2D Scene::Two_Type_Location()
 	return Vector2D(600, 300);
 }
 */
+

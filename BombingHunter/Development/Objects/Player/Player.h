@@ -11,6 +11,9 @@ private:
 	int animation[2];		//アニメーション画像
 	int animation_count;	//アニメーション時間
 	int flip_flag;			//反転フラグ
+	int img_ch[2];
+	int img[12];
+	int img_cnt;
 
 public:
 	Player();

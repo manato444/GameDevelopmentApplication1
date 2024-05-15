@@ -45,9 +45,9 @@ public:
 	//キャラカウントを取得
 	int GetCharaCount() { return this->chara_count; }
 
-	// UI* ui;
+	//画面外チェック
+	//void Check_OffScreen();
 	
-
 public:
 
 	//当たり判定チェック処理
@@ -55,7 +55,6 @@ public:
 
 	//オブジェクト生成処理
 	template<class T>
-
 	T* CreateObject(const Vector2D& location)
 	{
 		//指定したクラスを生成する

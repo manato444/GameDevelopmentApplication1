@@ -49,7 +49,7 @@ void Haneteki::Initialize()
 	radian = 0.0;
 
 	//‘å‚«‚³‚Ìİ’è
-	scale = 64.0;
+	scale = 45.0;
 
 	//‰Šú‰æ‘œ‚Ìİ’è
 	image = animation[0];
@@ -58,7 +58,7 @@ void Haneteki::Initialize()
 	velocity = Vector2D(0.5f, 0.0f);
 
 	//“–‚½‚è”»’è‚Ì‘å‚«‚³İ’è
-	box_size = Vector2D(54.0f);
+	box_size = Vector2D(45.0f);
 }
 
 void Haneteki::Update()

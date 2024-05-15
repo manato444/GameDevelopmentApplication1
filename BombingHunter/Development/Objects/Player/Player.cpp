@@ -20,9 +20,13 @@ void Player::Initialize()
 	//画像の読み込み
 	//animation[0] = LoadGraph("image/トリパイロット/飛ぶ1.png");
 	//animation[1] = LoadGraph("image/トリパイロット/飛ぶ2.png");
-	animation[0] = LoadGraph("image/トリパイロット/Player.bmp");
-	animation[1] = LoadGraph("image/トリパイロット/Player.bmp");
+	//animation[0] = LoadGraph("image/トリパイロット/Player.bmp");
+	//animation[1] = LoadGraph("image/トリパイロット/Player.bmp");
 
+	LoadDivGraph("image/トリパイロット/0.png", 12, 4, 3, 73, 73, img);
+	//animation[1] = LoadDivGraph("image/トリパイロット/0.png", 12, 4, 3, 73, 73, img_ch);
+
+	img_cnt = 0;
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
@@ -38,6 +42,8 @@ void Player::Initialize()
 
 	//初期画像の設定
 	image = animation[0];
+
+	//img[0] = animation[0];
 
 	box_size = Vector2D(64.0f);
 }
@@ -55,11 +61,13 @@ void Player::Update()
 //描画処理
 void Player::Draw()const
 {
-
 	//DrawExtendGraph(1, 1, 1, 1, image, FALSE);
 	
 	//プレイヤー画像の描画
-	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
+	//DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
+
+	DrawRotaGraphF(location.x, location.y, 1.0, radian, img[img_cnt], TRUE, flip_flag);
+
 	__super::Draw();
 
 	//デバッグ用
@@ -86,6 +94,8 @@ void Player::Finalize()
 	//使用した画像を解放する
 	DeleteGraph(animation[0]);
 	DeleteGraph(animation[1]);
+
+	DeleteGraph(img[4]);
 }
 
 //当たり判定通知処理
@@ -130,15 +140,15 @@ void Player::Movement()
 	location += velocity;
 
 	//画面外に行かないようにする処理
-	if (location.x < (scale / 2.0f))
+	if (location.x < (scale / 2.0f + 15))
 	{
 		velocity.x = 0.0f;
-		location.x = scale / 2.0f;
+		location.x = scale / 2.0f + 15;
 	}
-	else if ((640.0f - (scale / 2.0f)) < location.x)
+	else if ((416.0f - (scale / 2.0f)) < location.x)
 	{
 		velocity.x = 0.0f;
-		location.x = 640.0f - (scale / 2.0f);
+		location.x = 416.0f - (scale / 2.0f);
 	}
 }
 
@@ -148,11 +158,17 @@ void Player::AnimeControl()
 	//フレームカウントを加算する
 	animation_count++;
 
-	//60フレーム目に到達したら
-	if (animation_count >= 30)
+	//10フレーム目に到達したら
+	if (animation_count >= 20)
 	{
 		//カウントリセット
 		animation_count = 0;
+
+		img_cnt++;
+		if (img_cnt == 4)
+		{
+			img_cnt = 0;
+		}
 
 		//画像の切り替え
 		if (image == animation[0])
@@ -163,5 +179,6 @@ void Player::AnimeControl()
 		{
 			image = animation[0];
 		}
+		
 	}
 }
