@@ -15,10 +15,10 @@ Bullet::~Bullet()
 void Bullet::Initialize()
 {
 	//画像の読み込み
-	//animation[0] = LoadGraph("image/爆弾/爆弾.png");
+	animation[0] = LoadGraph("image/爆弾/ミサイル.png");
 	//animation[0] = LoadGraph("image/爆弾/Bullet.bmp");
-	animation[0] = LoadGraph("image/爆弾/bl1.png");
-	animation[1] = LoadGraph("image/爆弾/bl2.png");
+	//animation[0] = LoadGraph("image/爆弾/bl1.png");
+	//animation[1] = LoadGraph("image/爆弾/bl2.png");
 
 
 	//エラーチェック
@@ -34,13 +34,13 @@ void Bullet::Initialize()
 	radian = DX_PI_F;
 
 	//大きさの設定
-	scale = 64.0;
+	scale = 30.0;
 
 	//初期画像の設定
 	image = animation[0];
 
 	//当たり判定の大きさ
-	box_size = Vector2D(14.5f, 50.0f);
+	box_size = Vector2D(40.0f, 40.0f);
 }
 
 void Bullet::Update()
@@ -95,7 +95,7 @@ void Bullet::Movement()
 	velocity = 0.0f;
 
 	//radian += DX_PI_F / 2;
-	velocity.y += 3.2f;
+	velocity.y += 0.7f;
 	flip_flag = FALSE;
 	//flip_flag = TRUE;
 	//radian = DX_PI_F / 60;
@@ -104,14 +104,14 @@ void Bullet::Movement()
 	animation_count++;
 
 	//1フレームごとに回転させる
-	/*
+	
 	if (animation_count >= 3)
 	{
 		//カウントリセット
 		animation_count = 0;
 			radian += DX_PI_F / 180;
 	}
-	*/
+	
 
 	//現在の位置座標に速さを加算する
 	location += velocity;

@@ -1,4 +1,5 @@
 #include"GameObject.h"
+#include"../Utility/ResourceManager.h"
 #include"DxLib.h"
 //コンストラクタ
 GameObject::GameObject() :
@@ -8,7 +9,8 @@ GameObject::GameObject() :
 	image(0),
 	sound(0),
 	type(NULL),
-	box_size(0.0f)
+	box_size(0.0f),
+	flip_flag(FALSE)
 {
 }
 
@@ -31,13 +33,15 @@ void GameObject::Update()
 //描画処理
 void GameObject::Draw() const
 {
+	//メンバの情報を基に画像を描画
+	DrawRotaGraphF(location.x, location.y, 1.0, 0.0, image, TRUE, flip_flag);
 
-	//Vector2D tl = location - (box_size / 2.0f);
-	//Vector2D br = location + (box_size / 2.0f);
-	//DrawBoxAA(tl.x, tl.y, br.x, br.y, GetColor(255, 0, 0), FALSE);
+	Vector2D tl = location - (box_size / 2.0f);
+	Vector2D br = location + (box_size / 2.0f);
+	DrawBoxAA(tl.x, tl.y, br.x, br.y, GetColor(255, 0, 0), FALSE);
 
 	//当たり判定の可視化
-	
+	/*
 #ifdef D_PIVOT_CENTER
 
 	Vector2D tl = location - (box_size / 2.0f);
@@ -52,40 +56,34 @@ void GameObject::Draw() const
 	DrawBoxAA(tl.x, tl.y, br.x, br.y, GetColor(255, 0, 0), FALSE);
 
 #endif  D_PIVOT_CENTER
-
+*/
 }
 
 //終了処理
 void GameObject::Finalize()
 {
 }
-
 //当たり判定通知処理
 void GameObject::OnHitCollision(GameObject* hit_object)
 {
 	//当たった時に行う処理
 	delete hit_object;
-
 }
-
 //位置情報取得処理
 Vector2D GameObject::GetLocation() const
 {
 	return this->location;
 }
-
 //位置情報設定処理
 void GameObject::SetLocation(const Vector2D& location)
 {
 	this->location = location;
 }
-
 //当たり判定の大きさ取得
 Vector2D GameObject::GetBoxSize() const
 {
 	return box_size;
 }
-
 /*
 int GameObject::Set_T()
 {

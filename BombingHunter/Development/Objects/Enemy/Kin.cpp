@@ -27,12 +27,18 @@ void Kin::Initialize()
 	animation[3] = LoadGraph("image/金のテキ/4.png");
 	animation[4] = LoadGraph("image/金のテキ/5.png");
 	*/
+	/*
 	animation[0] = LoadGraph("image/金のテキ/Kin.bmp");
 	animation[1] = LoadGraph("image/金のテキ/Kin.bmp");
 	animation[2] = LoadGraph("image/金のテキ/Kin.bmp");
 	animation[3] = LoadGraph("image/金のテキ/Kin.bmp");
 	animation[4] = LoadGraph("image/金のテキ/Kin.bmp");
-
+	*/
+	animation[0] = LoadGraph("image/金のテキ/金のテキ1.png");
+	animation[1] = LoadGraph("image/金のテキ/金のテキ2.png");
+	animation[2] = LoadGraph("image/金のテキ/金のテキ3.png");
+	animation[3] = LoadGraph("image/金のテキ/金のテキ4.png");
+	animation[4] = LoadGraph("image/金のテキ/金のテキ5.png");
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1 || animation[2] == -1 || animation[3] == -1 || animation[4] == -1)

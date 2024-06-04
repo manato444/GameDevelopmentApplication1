@@ -10,14 +10,16 @@
 #include"../Objects/Enemy/Haneteki.h"
 #include"../Objects/Enemy/Harpie.h"
 #include"../Objects/Enemy/Kin.h"
+#include"../Objects/Bullet/EnemyBullet.h"
 
 //Hakoteki* hakoteki;
 
 //コンストラクタ
 Scene::Scene() :
-	objects(), image(NULL),
+	objects(), image(NULL),f_image(NULL),
 	enemy_popcount(0),
-	chara_count(0)
+	chara_count(0),
+	bx(0)
 {
 }
 
@@ -31,20 +33,20 @@ Scene::~Scene()
 //初期化処理
 void Scene::Initialize()
 {
+	chara_count = 0;
 
 	//プレイヤーを生成する
 	CreateObject<Player>(Vector2D(320.0f, 50.0f));
 
-
 	//背景を描画
 	//image = LoadGraph("image/背景/背景1.png"); //	爆撃ハンター用背景
-	f_image = LoadGraph("image/背景/フレーム.png");	//枠(?)
+	//f_image = LoadGraph("image/背景/フレーム.png");	//枠(?)
+	//image = LoadGraph("image/背景/back1.png");	//?
 	image = LoadGraph("image/背景/space.bmp");	//宇宙背景
-
+	//image = LoadGraph("image/背景/背景.png");
+	// 
 	//出現タイプを乱数で取得(スポーン位置の設定)
 	//type = GetRand(1) + 1;
-
-	
 
 }
 
@@ -52,6 +54,7 @@ void Scene::Update()
 {
 	//背景画像の描画位置を更新
 	bx += 1;
+	//bx = 0;
 
 	//だいたい２秒ごとに敵を生成
 	if (enemy_popcount >= 250)
@@ -63,68 +66,97 @@ void Scene::Update()
 	else {
 		enemy_popcount++;
 	}
+	for (chara_count = 0; chara_count < MAX_ENEMY_CHARACTOR; chara_count++)
+	{
+		if (chara_count == NULL)
+		{
+			break;
+		}
+	}
 
+	//Enemy_Bullet();
+
+	//入力機能：更新処理
+	InputControl* input = InputControl::GetInstance();
 
 	//スペースキーでBulletを生成
-	if (InputControl::GetKeyDown(KEY_INPUT_SPACE))
+	if (input->GetKeyDown(KEY_INPUT_SPACE) || input->GetButtonDown(12))
 	{
 		//配列にPlayerがいるかひとつずつチェックする
 		for (int i = 0; i < objects.size(); i++)
 		{
 			//プレイヤーがいたら位置情報を取得して弾を生成する
-			if (!(dynamic_cast<Player*>(objects[i]) == nullptr))
+			if ((dynamic_cast<Player*>(objects[i]) != nullptr))
 			{
-				//Bulletを生成
+				//Bulletを生成x
 				CreateObject<Bullet>(objects[i]->GetLocation());
+
 			}
 		}
 	}
 
 	//Bullet画面外チェック
-	//Check_OffScreen();
+	Check_OffScreen();
 
 	//シーンに存在するオブジェクトの更新処理
 	for (GameObject* obj : objects)
 	{
 		obj->Update();
 	}
-	
+
+	/*
+	//シーンに存在するオブジェクトの更新処理
+	for (GameObject* obj : e_obj)
+	{
+		obj->Update();
+	}
+	*/
+	/*
+	//当たり判定
+	for (int i = 0; i < objects.size(); i++)
+	{
+		for (int j = 0; j < e_obj.size(); j++)
+		{
+			//当たり判定チェック処理
+			HitCheckObject(objects[i], e_obj[j]);
+		
+		}
+	}
+	*/
+
 	//オブジェクト同士の当たり判定チェック
 	for (int i = 0; i < objects.size(); i++)
 	{
 		for (int j = i + 1; j < objects.size(); j++)
 		{
-			if (!(dynamic_cast<Haneteki*>(objects[i]) == nullptr))
-			{
-				if (!(dynamic_cast<Bullet*>(objects[j]) == nullptr))
-				{
-					//当たり判定チェック処理
-					HitCheckObject(objects[i], objects[j]);
-				}
-			}
+			//当たり判定チェック処理
+			HitCheckObject(objects[i], objects[j]);	
 		}
 	}
-	
 }
 
 //描画処理
 void Scene::Draw() const
 {
 	//背景画像の描画
-	//DrawGraph(bx % 640, 0, image, TRUE);
-	//DrawGraph(bx % 640 - 640, 0, image, TRUE);
+	DrawGraph(bx % 640, 0, image, TRUE);
+	DrawGraph(bx % 640 - 640, 0, image, TRUE);
 
-	DrawGraph(0, bx % 480, image, TRUE);
-	DrawGraph(0, bx % 480 - 480, image, TRUE);
-
-	DrawGraph(0, 0, f_image, TRUE);
-
+	//DrawGraph(0, bx % 480, image, TRUE);
+	//DrawGraph(0, bx % 480 - 480, image, TRUE);
+	//DrawGraph(0, 0, f_image, TRUE);
 
 	//シーンに存在するオブジェクトの描画処理
 	for (GameObject* obj : objects)
 	{
 		obj->Draw();
 	}
+	/*
+	for (GameObject* obj : e_obj)
+	{
+		obj->Draw();
+	}
+	*/
 }
 
 //終了処理
@@ -142,10 +174,28 @@ void Scene::Finalize()
 		obj->Finalize();
 		delete obj;
 	}
+	/*
+	for (GameObject* obj : e_obj)
+	{
+		obj->Finalize();
+		delete obj;
+	}
+	*/
 
+	//動的配列が空なら処理を終了する(E)
+	/*
+	if (e_obj.empty())
+	{
+		return;
+	}
+	for (GameObject* obj : e_obj)
+	{
+		obj->Finalize();
+		delete obj;
+	}
+	*/
 	//動的配列の解放
 	objects.clear();
-
 }
 
 //敵の種類をランダムで決めて生成する処理
@@ -160,7 +210,7 @@ void Scene::randomchar()
 		{
 			//ハネテキを生成
 			CreateObject<Haneteki>(Vector2D(10.0f, 300.0f));
-
+			//CreateEnemyObject<Haneteki>(Vector2D(1.0f, 300.0f));
 			/*
 			if (type == 1) {
 				//スポーン位置を【左】に設定
@@ -179,6 +229,7 @@ void Scene::randomchar()
 		{
 			//ハコテキを生成
 			CreateObject<Hakoteki>(Vector2D(0.0f, 0.0f));
+			//CreateEnemyObject<Hakoteki>(Vector2D(1.0f, 300.0f));
 		}
 	}
 	else if (num <= 90)
@@ -187,6 +238,7 @@ void Scene::randomchar()
 		{
 			//ハーピーを生成
 			CreateObject<Harpie>(Vector2D(0.0f, 0.0f));
+			//CreateEnemyObject<Haneteki>(Vector2D(1.0f, 300.0f));
 		}
 	}
 	else
@@ -195,9 +247,32 @@ void Scene::randomchar()
 		{
 			//金のテキを生成
 			CreateObject<Kin>(Vector2D(0.0f, 0.0f));
+			//CreateEnemyObject<Kin>(Vector2D(1.0f, 300.0f));
 		}
 	}
 }
+/*
+void Scene::Enemy_Bullet()
+{
+	e_cnt++;
+	if (e_cnt >= 360)
+	{
+		e_cnt = 0;
+		//配列にHanetekiがいるかひとつずつチェックする
+		for (int i = 0; i < objects.size(); i++)
+		{
+			//プレイヤーがいたら位置情報を取得して弾を生成する
+			if ((dynamic_cast<Haneteki*>(objects[i]) != nullptr))
+			{
+
+				//Bulletを生成x
+				CreateObject<E_Bullet>(objects[i]->GetLocation());
+
+			}
+		}
+	}
+}
+*/
 
 //当たり判定チェック処理(矩形の中心で当たり判定をとる)
 void Scene::HitCheckObject(GameObject* a, GameObject* b)
@@ -214,13 +289,28 @@ void Scene::HitCheckObject(GameObject* a, GameObject* b)
 		a->OnHitCollision(b);
 		b->OnHitCollision(a);
 
-		//要素の削除
-		objects.erase(objects.begin() + 1);
+		/*
+		for (int i = 0; i < objects.size(); i++)
+		{
+			//敵がいたら
+			if ((dynamic_cast<Haneteki*>(objects[i]) != nullptr))
+			{
+				this->objects.erase(objects.begin() + i);
+			}
+		}
+		*/
 
+		//objects.erase(objects.begin());
+
+		//要素の削除
+		//e_obj.erase(e_obj.begin());
 	}
 }
 
-/*
+
+
+
+
 //画面外処理
 void Scene::Check_OffScreen()
 {
@@ -235,15 +325,15 @@ void Scene::Check_OffScreen()
 		{
 			bl = objects[i]->GetLocation();
 
-			if (bl.y > 380.0f)
+			if (bl.y > 460.0f)
 			{
 				//要素の削除
-				this->objects.erase(objects.begin() + 1);
+				this->objects.erase(objects.begin() + i);
 			}
 		}
 	}
 }
-*/
+
 
 
 /*

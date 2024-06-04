@@ -2,6 +2,7 @@
 
 #include "../Utility/Vector2D.h"
 #include"UI/UI.h"
+#include"../Utility/ResourceManager.h"
 
 
 #define D_PIVOT_CENTER
@@ -12,6 +13,8 @@ class GameObject
 protected:
 	Vector2D location;	//ˆÊ’uî•ñ
 	Vector2D box_size;
+
+	int flip_flag;
 
 	double scale;		//‘å‚«‚³
 	double radian;		//Œü‚«

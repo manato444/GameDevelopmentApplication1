@@ -42,7 +42,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		{
 
 			//入力機能の更新
-			InputControl::Update();
+			//InputControl::Update();
+			// 
+				//入力機能：更新処理
+			InputControl* input = InputControl::GetInstance();
+
+			//オブジェクトの更新処理
+			input->Update();
 
 			//シーンの更新処理
 			scene->Update();
