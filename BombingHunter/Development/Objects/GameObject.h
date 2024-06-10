@@ -15,12 +15,15 @@ protected:
 	Vector2D box_size;
 
 	int flip_flag;
+	//std::vector<int> object;
 
 	double scale;		//大きさ
 	double radian;		//向き
 	int image;			//描画する画像
 	int sound;			//再生する音源
 	int type;
+
+	bool hit_flg;
 
 public:
 	GameObject();
@@ -46,6 +49,9 @@ public:
 	//当たり判定の大きさを取得する
 	Vector2D GetBoxSize() const;
 
+	//virtual bool C_DeleteObject(bool flg);
+	virtual void DeleteObject(GameObject* hit_obj);
+	virtual bool D_Objects();
 
 	//敵の出現タイプ
 	virtual Vector2D GetEnemyLocation_Type1() { return Vector2D(); }

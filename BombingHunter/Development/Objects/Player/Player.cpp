@@ -10,12 +10,10 @@ Player::Player() : animation_count(0),rot(0)
 	animation[0] = NULL;
 	animation[1] = NULL;
 }
-
 //デストラクタ
 Player::~Player()
 {
 }
-	
 //初期化処理
 void Player::Initialize()
 {
@@ -53,13 +51,10 @@ void Player::Initialize()
 	{
 		throw("トリパイロットの画像がありません\n");
 	}
-
 	//向きの設定
 	radian = 0.0f;
-
 	//大きさの設定
 	scale = 64.0f;
-
 	//初期画像の設定
 	image = animation_data[0];
 	//image = animation[0];
@@ -67,7 +62,6 @@ void Player::Initialize()
 
 	//大きさ指定
 	box_size = Vector2D(64.0f);
-
 	//マウスホイール回転数
 	rot = 0;
 }
@@ -83,7 +77,6 @@ void Player::Update()
 
 	//移動処理
 	Movement();
-
 	//アニメーション制御
 	AnimeControl();
 }
@@ -97,8 +90,6 @@ void Player::Draw()const
 	//DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
 
 	//DrawRotaGraphF(location.x, location.y, 1.0, radian, img[img_cnt], TRUE, flip_flag);
-
-	__super::Draw();
 
 	//デバッグ用
 	/*
@@ -119,20 +110,23 @@ void Player::Draw()const
 
 /* - - - - - - - - - - - - - - - - - - -< XInput >- - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-	
+	//------<入力確認用>------//
+
 		//入力情報の取得
 	InputControl* input = InputControl::GetInstance();
 
+	//ローカル変数定義
 	int x, y, fontsize, color;
 
 	//描画座標
 	x = 0;
 	y = 20;
 
-	//変数定義(フォントサイズ)
-	fontsize = 18;
+	//フォントサイズ
+	fontsize = 12;
 	//色
-	color = 0xf6ff00;// GetColor(255, 255, 255);
+	//color = 0xf6ff00;
+	color = GetColor(255, 255, 255);
 	//フォント
 	ChangeFont("ＭＳ 明朝");
 
@@ -144,27 +138,50 @@ void Player::Draw()const
 	DrawFormatString(x, y += fontsize, color, "デジタル方向ボタン左... %d", input->GetButton(2));
 	DrawFormatString(x, y += fontsize, color, "デジタル方向ボタン右... %d", input->GetButton(3));
 
-	DrawFormatString(x, y += fontsize + 18, color, "STARTボタン... %d", input->GetButton(4));
+	DrawFormatString(x, y += fontsize + 12, color, "STARTボタン... %d", input->GetButton(4));
 	DrawFormatString(x, y += fontsize, color, "BACKボタン... %d", input->GetButton(5));
 
-	DrawFormatString(x, y += fontsize + 18, color, "左スティック押し込み... %d", input->GetButton(6));
+	DrawFormatString(x, y += fontsize + 12, color, "左スティック押し込み... %d", input->GetButton(6));
 	DrawFormatString(x, y += fontsize, color, "右スティック押し込み... %d", input->GetButton(7));
 
-	DrawFormatString(x, y += fontsize + 18, color, "LBボタン... %d", input->GetButton(8));
+	DrawFormatString(x, y += fontsize + 12, color, "LBボタン... %d", input->GetButton(8));
 	DrawFormatString(x, y += fontsize, color, "RBボタン... %d", input->GetButton(9));
 
-	DrawFormatString(x, y += fontsize + 18, color, "Aボタン... %d", input->GetButton(12));
+	DrawFormatString(x, y += fontsize + 12, color, "Aボタン... %d", input->GetButton(12));
 	DrawFormatString(x, y += fontsize, color, "Bボタン... %d", input->GetButton(13));
 	DrawFormatString(x, y += fontsize, color, "Xボタン... %d", input->GetButton(14));
 	DrawFormatString(x, y += fontsize, color, "Yボタン... %d", input->GetButton(15));
-	DrawFormatString(x, y += fontsize + 18, color, "左トリガー... %.1f", trigger[0]);
+	DrawFormatString(x, y += fontsize + 12, color, "左トリガー... %.1f", trigger[0]);
 	DrawFormatString(x, y += fontsize, color, "右トリガー... %.1f", trigger[1]);
 
-	DrawFormatString(x, y += fontsize + 18, color, "左スティックX... %.1f", float(stick[0].x));
+	DrawFormatString(x, y += fontsize + 12, color, "左スティックX... %.1f", float(stick[0].x));
 	DrawFormatString(x, y += fontsize, color, "左スティックY... %.1f", float(stick[0].y));
 
 	DrawFormatString(x, y += fontsize, color, "右スティックX... %.1f", float(stick[1].x));
 	DrawFormatString(x, y += fontsize, color, "右スティックY... %.1f", float(stick[1].y));
+
+	DrawFormatString(x, y += 24, color, "十字キー（左）... %d", input->GetKey(KEY_INPUT_LEFT));
+	DrawFormatString(x, y += 12, color, "十字キー（右）... %d", input->GetKey(KEY_INPUT_RIGHT));
+	DrawFormatString(x, y += 12, color, "十字キー（上）... %d", input->GetKey(KEY_INPUT_UP));
+	DrawFormatString(x, y += 12, color, "十字キー（下）... %d", input->GetKey(KEY_INPUT_DOWN));
+
+	DrawFormatString(x, y += 18, color, "マウスホイール回転... %d", rot);
+
+	//ローカル変数定義
+	int m_x, m_y;
+	fontsize = 40;
+
+	bool flag = false;
+
+	//マウスカーソル座標取得
+	input->GetMousePosition(m_x, m_y);
+
+	//マウスカーソル（円）
+	DrawCircleAA(m_x, m_y, 20, 100, GetColor(255, 255, 255), FALSE);
+	DrawCircleAA(m_x, m_y, 15, 100, GetColor(255, 255, 255), FALSE);
+	DrawCircleAA(m_x, m_y, 5, 100, GetColor(255, 255, 255), TRUE);
+
+	__super::Draw();
 }
 
 //終了処理
@@ -173,7 +190,6 @@ void Player::Finalize()
 	//使用した画像を解放する
 	DeleteGraph(animation[0]);
 	DeleteGraph(animation[1]);
-
 	DeleteGraph(img[4]);
 }
 
@@ -181,6 +197,7 @@ void Player::Finalize()
 void Player::OnHitCollision(GameObject* hit_object)
 {
 	//当たった時の処理
+
 }
 
 //移動処理
@@ -288,7 +305,6 @@ void Player::Movement()
 		velocity.y = 0.0f;
 		location.y = 480.0f - (box_size.y / 2.0f);
 	}
-
 
 	//位置情報に速度を加算する
 	location += velocity;

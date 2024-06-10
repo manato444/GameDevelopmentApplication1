@@ -2,7 +2,7 @@
 
 #include"../GameObject.h"
 #include"../Player/Player.h"
-
+#include"../../Scene/Scene.h"
 
 class Bullet : public GameObject
 {
@@ -15,19 +15,22 @@ private:
 	int animation_count;	//アニメーション時間
 	int flip_flag;			//反転フラグ
 
-	int type;
+	int flg;  //オブジェクト削除フラグ
+	int type; //なにこれ
 
 public:
 	Bullet();
 	~Bullet();
 
-	virtual void Initialize() override;
-	virtual void Update() override;
-	virtual void Draw() const override;
-	virtual void Finalize() override;
+	virtual void Initialize() override;	//初期化処理
+	virtual void Update() override;		//更新処理
+	virtual void Draw() const override;	//描画処理
+	virtual void Finalize() override;	//終了時処理
 
 	//当たり判定通知処理
 	virtual void OnHitCollision(GameObject* hit_object) override;
+	virtual bool D_Objects() override;
+	//virtual bool C_DeleteObject(bool flg) override;
 
 private:
 	//移動処理

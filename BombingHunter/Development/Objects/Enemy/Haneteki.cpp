@@ -1,17 +1,18 @@
 #include"Haneteki.h"
 #include"DxLib.h"
 
+//コンストラクタ
 Haneteki::Haneteki() :
 	animation_count(0), flip_flag(FALSE), type(NULL)
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
 }
-
+//デストラクタ
 Haneteki::~Haneteki()
 {
 }
-
+//初期化処理
 void Haneteki::Initialize()
 {
 	//画像の読み込み
@@ -25,8 +26,6 @@ void Haneteki::Initialize()
 	{
 		throw("ハネテキ画像がありません\n");
 	}
-
-	
 	//location.x = 10.0f;
 	//location.y = 300.0f;
 	//location = ui->GetEnemyLocation_Type1();
@@ -47,30 +46,24 @@ void Haneteki::Initialize()
 	*/
 	//向きの設定
 	radian = 0.0;
-
 	//大きさの設定
 	scale = 45.0;
-
 	//初期画像の設定
 	image = animation[0];
-
 	//移動速度の設定
 	velocity = Vector2D(0.5f, 0.0f);
-
 	//当たり判定の大きさ設定
 	box_size = Vector2D(45.0f);
 }
-
+//更新処理
 void Haneteki::Update()
 {
-
 	//移動処理
 	Movement();
-
 	//アニメーション制御
 	AnimeControl();
 }
-
+//描画処理
 void Haneteki::Draw() const
 {
 	//プレイヤー画像の描画
@@ -94,34 +87,37 @@ void Haneteki::Draw() const
 #endif
 */
 }
-
+//終了時処理
 void Haneteki::Finalize()
 {
 	//使用した画像を解放する
 	DeleteGraph(animation[0]);
 	DeleteGraph(animation[1]);
 }
-
+//当たり判定通知処理
 void Haneteki::OnHitCollision(GameObject* hit_object)
 {
-	//当たった時の処理
-	velocity = 0.0f;
-	// Finalize();
+	//ローカル変数定義（インスタンスを取得）
+	//Scene* scene = new Scene;
 
-	//delete hit_object;
+	/* --- 当たった時の処理(判別処理) --- */
+	if (dynamic_cast<Bullet*>(hit_object) != nullptr){
+		//Bulletなら削除を通知する
+		//scene->DeleteObject(hit_object);
+		velocity = 0.0f;
+	}
+	else if (dynamic_cast<Haneteki*>(hit_object) != nullptr){
+		//自分なら無視
+	}
 }
 
+//移動処理
 void Haneteki::Movement()
 {
-
 	//移動の速さ
 	//velocity = 0.0f; 
-	
-	
 	//velocity.x += 0.5f;
 	flip_flag = FALSE;
-	
-
 	/*
 	if (type == 1)
 	{
@@ -134,12 +130,10 @@ void Haneteki::Movement()
 		flip_flag = TRUE;
 	}
 	*/
-	
-
 	//現在の位置座標に速さを加算する
 	location += velocity;
 }
-
+//アニメーション制御
 void Haneteki::AnimeControl()
 {
 	//フレームカウントを加算する
@@ -162,6 +156,8 @@ void Haneteki::AnimeControl()
 		}
 	}
 }
+
+//無関係
 /*
 Vector2D Haneteki::GetLocation() const
 {

@@ -1,5 +1,7 @@
 #include"Bullet.h"
 #include"DxLib.h"
+#include"../Effect/Effect.h"
+#include"../../Scene/Scene.h"
 
 Bullet::Bullet() :
 	animation_count(0), flip_flag(NULL)// type(NULL)
@@ -7,19 +9,19 @@ Bullet::Bullet() :
 	animation[0] = NULL;
 	//animation[1] = NULL;
 }
-
+//デストラクタ
 Bullet::~Bullet()
 {
 }
-
+//初期化処理
 void Bullet::Initialize()
 {
 	//画像の読み込み
 	animation[0] = LoadGraph("image/爆弾/ミサイル.png");
+	//animation[0] = LoadGraph("image/爆弾/meteor.png");
 	//animation[0] = LoadGraph("image/爆弾/Bullet.bmp");
 	//animation[0] = LoadGraph("image/爆弾/bl1.png");
 	//animation[1] = LoadGraph("image/爆弾/bl2.png");
-
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
@@ -31,7 +33,7 @@ void Bullet::Initialize()
 	//location = ui->GetEnemyLocation_Type1();
 
 	//向きの設定
-	radian = DX_PI_F;
+	radian = DX_PI_F / 2;
 
 	//大きさの設定
 	scale = 30.0;
@@ -41,8 +43,11 @@ void Bullet::Initialize()
 
 	//当たり判定の大きさ
 	box_size = Vector2D(40.0f, 40.0f);
-}
 
+	//移動速度の設定
+	velocity = Vector2D(0.0f, 0.7f);
+}
+//更新処理
 void Bullet::Update()
 {
 	//移動処理
@@ -51,16 +56,17 @@ void Bullet::Update()
 	//アニメーション制御
 	AnimeControl();
 }
-
+//描画処理
 void Bullet::Draw() const
 {
 
 	//Bullet画像の描画
-	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
-	//__super::Draw();
+	//DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
+	__super::Draw();
 
-	/*
+	
 	//デバッグ用
+	/*
 #if _DEBUG
 	//当たり判定の可視化
 	Vector2D box_collision_upper_left = location - (Vector2D(1.0f) *
@@ -76,43 +82,55 @@ void Bullet::Draw() const
 #endif
 */
 }
-
+//終了時処理
 void Bullet::Finalize()
 {
 	//使用した画像を解放する
 	DeleteGraph(animation[0]);
 	DeleteGraph(animation[1]);
 }
-
+//当たったこと通知(hit_object)
 void Bullet::OnHitCollision(GameObject* hit_object)
 {
-	//当たった時の処理
-	//velocity = 0.0f;
+	/* --- 当たった時の処理(判別処理) --- */
+	if (dynamic_cast<Haneteki*>(hit_object) != nullptr) {
+		//Hanetekiなら削除処理を通知
+		flg = true;
+	}
+	else if (dynamic_cast<Bullet*>(hit_object) != nullptr) {
+		//Bulletなら当たり判定を無視
+		flg = false;
+	}
+	else if (dynamic_cast<Player*>(hit_object) != nullptr) {
+		//Playerなら当たり判定を無視
+		flg = false;
+	}
+	else{
+		flg = false;
+	}
+	//エフェクト処理(仮)
+	//CreateEffect(hit_object->GetLocation());
+}
+//消すかチェックして通知
+bool Bullet::D_Objects()
+{
+	return flg;
 }
 
+//移動処理
 void Bullet::Movement()
 {
-	velocity = 0.0f;
-
-	//radian += DX_PI_F / 2;
-	velocity.y += 0.7f;
 	flip_flag = FALSE;
-	//flip_flag = TRUE;
-	//radian = DX_PI_F / 60;
 
 	//フレームカウントを加算する
 	animation_count++;
-
 	//1フレームごとに回転させる
-	
 	if (animation_count >= 3)
 	{
 		//カウントリセット
 		animation_count = 0;
-			radian += DX_PI_F / 180;
+			//radian += DX_PI_F / 180;
 	}
-	
-
 	//現在の位置座標に速さを加算する
 	location += velocity;
 	/*

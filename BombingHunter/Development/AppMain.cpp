@@ -41,9 +41,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		while (ProcessMessage() != -1 && CheckHitKey(KEY_INPUT_ESCAPE) != TRUE)
 		{
 
-			//入力機能の更新
-			//InputControl::Update();
-			// 
 				//入力機能：更新処理
 			InputControl* input = InputControl::GetInstance();
 
