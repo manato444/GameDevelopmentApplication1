@@ -23,7 +23,8 @@ protected:
 	int sound;			//再生する音源
 	int type;
 
-	bool hit_flg;
+	bool hit_flg;	//ヒットフラグ
+	bool e_flg;	//エフェクトフラグ
 
 public:
 	GameObject();
@@ -52,6 +53,7 @@ public:
 	//virtual bool C_DeleteObject(bool flg);
 	virtual void DeleteObject(GameObject* hit_obj);
 	virtual bool D_Objects();
+	virtual bool E_Effect();
 
 	//敵の出現タイプ
 	virtual Vector2D GetEnemyLocation_Type1() { return Vector2D(); }

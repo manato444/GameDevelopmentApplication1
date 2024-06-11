@@ -8,6 +8,8 @@ class Bullet : public GameObject
 {
 private:
 
+	std::vector<int> animation_data;	//アニメーションデータ
+
 	//移動の速さ
 	Vector2D velocity;
 
@@ -15,7 +17,8 @@ private:
 	int animation_count;	//アニメーション時間
 	int flip_flag;			//反転フラグ
 
-	int flg;  //オブジェクト削除フラグ
+	int d_flg;  //オブジェクト削除フラグ
+	int e_flg;	//エフェクト生成フラグ
 	int type; //なにこれ
 
 public:
@@ -30,6 +33,7 @@ public:
 	//当たり判定通知処理
 	virtual void OnHitCollision(GameObject* hit_object) override;
 	virtual bool D_Objects() override;
+	virtual bool E_Effect() override;
 	//virtual bool C_DeleteObject(bool flg) override;
 
 private:

@@ -41,6 +41,7 @@ void Effect::Initialize()
 void Effect::Update()
 {
 	Movement();	//移動
+
 	AnimeControl();	//アニメーション制御
 }
 //描画処理

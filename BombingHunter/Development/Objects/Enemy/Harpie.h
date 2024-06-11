@@ -10,7 +10,7 @@ protected:
 
 private:
 
-	Vector2D location;
+	Vector2D velocity;
 	UI* ui;
 
 	int animation[2];		//アニメーション画像
@@ -39,12 +39,6 @@ private:
 	//アニメーション制御
 	void AnimeControl();
 
-	//位置情報取得処理
-	Vector2D GetLocation() const;
 
-	//位置情報変更処理
-	void SetLocation(const Vector2D& locartion);
-
-	void SetLocation();
 
 };

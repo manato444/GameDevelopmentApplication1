@@ -32,7 +32,7 @@ private:
 
 	bool flg = false;
 
-	int image;		//画像
+	int image[3];		//画像
 	int f_image;		//枠
 	int e_cnt = 0;			//enemyカウント
 	int enemy_popcount;			//出現させるキャラをカウント

@@ -3,6 +3,8 @@
 
 #include"../GameObject.h"
 #include"../Bullet/Bullet.h"
+#include"../../Scene/Scene.h"
+#include"../Player/Player.h"
 #include<vector>
 
 class Effect : public GameObject

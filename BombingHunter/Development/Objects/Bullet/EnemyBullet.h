@@ -4,6 +4,7 @@
 #include"../Player/Player.h"
 #include"../Enemy/Haneteki.h"
 #include"../Enemy/Hakoteki.h"
+#include"../Bullet/Bullet.h"
 
 class E_Bullet : public GameObject
 {

@@ -2,6 +2,7 @@
 #include"DxLib.h"
 #include"../Effect/Effect.h"
 #include"../../Scene/Scene.h"
+#include"../../Utility/ResourceManager.h"
 
 Bullet::Bullet() :
 	animation_count(0), flip_flag(NULL)// type(NULL)
@@ -16,12 +17,22 @@ Bullet::~Bullet()
 //初期化処理
 void Bullet::Initialize()
 {
-	//画像の読み込み
-	animation[0] = LoadGraph("image/爆弾/ミサイル.png");
+	//画像の読み込み-----種類別変えたいときに使う
+	//animation[0] = LoadGraph("image/爆弾/ミサイル.png");
 	//animation[0] = LoadGraph("image/爆弾/meteor.png");
 	//animation[0] = LoadGraph("image/爆弾/Bullet.bmp");
 	//animation[0] = LoadGraph("image/爆弾/bl1.png");
 	//animation[1] = LoadGraph("image/爆弾/bl2.png");
+
+	//ローカル変数定義
+	ResourceManager* rm = ResourceManager::GetInstance();
+	std::vector<int> tmp;
+
+	//アニメーションを読み込む
+	tmp = rm->GetImages("image/爆弾/ミサイル.png");
+	animation_data.push_back(tmp[0]);	//アニメーション画像を配列に追加
+	tmp = rm->GetImages("image/爆弾/ミサイル.png");
+	animation_data.push_back(tmp[0]);
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
@@ -39,13 +50,13 @@ void Bullet::Initialize()
 	scale = 30.0;
 
 	//初期画像の設定
-	image = animation[0];
+	image = animation_data[0];
 
 	//当たり判定の大きさ
 	box_size = Vector2D(40.0f, 40.0f);
 
 	//移動速度の設定
-	velocity = Vector2D(0.0f, 0.7f);
+	velocity = Vector2D(0.0f, 1.5f);
 }
 //更新処理
 void Bullet::Update()
@@ -94,34 +105,56 @@ void Bullet::OnHitCollision(GameObject* hit_object)
 {
 	/* --- 当たった時の処理(判別処理) --- */
 	if (dynamic_cast<Haneteki*>(hit_object) != nullptr) {
-		//Hanetekiなら削除処理を通知
-		flg = true;
+		//Hanetekiなら削除処理を通知 & エフェクト生成を通知
+		d_flg = true;
+		e_flg = true;
+	}
+	else if (dynamic_cast<Hakoteki*>(hit_object) != nullptr) {
+		//Hanetekiなら削除処理を通知 & エフェクト生成を通知
+		d_flg = true;
+		e_flg = true;
+	}
+	else if (dynamic_cast<Harpie*>(hit_object) != nullptr) {
+		//Hanetekiなら削除処理を通知 & エフェクト生成を通知
+		d_flg = true;
+		e_flg = true;
+	}
+	else if (dynamic_cast<Kin*>(hit_object) != nullptr) {
+		//Hanetekiなら削除処理を通知 & エフェクト生成を通知
+		d_flg = true;
+		e_flg = true;
 	}
 	else if (dynamic_cast<Bullet*>(hit_object) != nullptr) {
 		//Bulletなら当たり判定を無視
-		flg = false;
+		d_flg = false;
 	}
 	else if (dynamic_cast<Player*>(hit_object) != nullptr) {
 		//Playerなら当たり判定を無視
-		flg = false;
+		d_flg = false;
 	}
 	else{
-		flg = false;
+		d_flg = false;
+		e_flg = false;
 	}
-	//エフェクト処理(仮)
-	//CreateEffect(hit_object->GetLocation());
 }
 //消すかチェックして通知
 bool Bullet::D_Objects()
 {
-	return flg;
+	return d_flg;
+}
+//エフェクトを生成するか
+bool Bullet::E_Effect()
+{
+	return e_flg;
 }
 
 //移動処理
 void Bullet::Movement()
 {
 	flip_flag = FALSE;
-
+	//現在の位置座標に速さを加算する
+	location += velocity;
+	/*
 	//フレームカウントを加算する
 	animation_count++;
 	//1フレームごとに回転させる
@@ -131,8 +164,7 @@ void Bullet::Movement()
 		animation_count = 0;
 			//radian += DX_PI_F / 180;
 	}
-	//現在の位置座標に速さを加算する
-	location += velocity;
+	*/
 	/*
 	if (flip_flag == FALSE)
 	{
@@ -160,23 +192,23 @@ void Bullet::SetLocation(const Vector2D& location)
 //アニメーション制御
 void Bullet::AnimeControl()
 {
-	//フレームカウントを加算する
+	//カウントの更新
 	animation_count++;
 
-	//60フレーム目に到達したら
-	if (animation_count >= 20)
+	//60フレームに到達したら
+	if (animation_count >= 60)
 	{
-		//カウントリセット
+		//カウントを0クリアする
 		animation_count = 0;
 
-		//画像の切り替え
-		if (image == animation[0]) {
-
-			image = animation[1];
+		//画像の切り替えを行う
+		if (image == animation_data[0])
+		{
+			image = animation_data[1];
 		}
-		else {
-
-			image = animation[0];
+		else
+		{
+			image = animation_data[0];
 		}
 	}
 }

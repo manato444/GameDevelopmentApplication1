@@ -2,7 +2,7 @@
 #include"DxLib.h"
 
 Kin::Kin() :
-	animation_count(0), flip_flag(FALSE), type(NULL)
+	animation_count(0), flip_flag(NULL), type(NULL), d_flg(false)
 {
 	
 	for (int i = 0; i < 5; i++)
@@ -56,10 +56,16 @@ void Kin::Initialize()
 	radian = 0.0;
 
 	//大きさの設定
-	scale = 64.0;
+	scale = 30.0;
 
 	//初期画像の設定
 	image = animation[0];
+
+	//速度指定
+	velocity = Vector2D(-1.0f, 0.0f);
+
+	//当たり判定の大きさ
+	box_size = Vector2D(30.0f);
 }
 
 void Kin::Update()
@@ -74,10 +80,11 @@ void Kin::Update()
 
 void Kin::Draw() const
 {
-	//プレイヤー画像の描画
+	//画像の描画
 	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
+	//__super::Draw();
 
-	//デバッグ用
+//	//デバッグ用
 #if _DEBUG
 	//当たり判定の可視化
 	Vector2D box_collision_upper_left = location - (Vector2D(1.0f) *
@@ -102,15 +109,28 @@ void Kin::Finalize()
 
 void Kin::OnHitCollision(GameObject* hit_object)
 {
-	//当たった時の処理
+	/* --- 当たった時の処理(判別処理) --- */
+	//if (dynamic_cast<Hakoteki*>(hit_object) != nullptr){
+	//	//自分なら無視
+	//	d_flg = false;
+	//}
+	//else {
+	//	d_flg = false;
+	//}
+}
+
+//消すかチェックして通知
+bool Kin::D_Objects()
+{
+	return d_flg;
 }
 
 void Kin::Movement()
 {
 
 	//移動の速さ
-	Vector2D velocity = 0.0f;
-	velocity.x -= 1.0f;
+	/*Vector2D velocity = 0.0f;
+	velocity.x -= 1.0f;*/
 	flip_flag = TRUE;
 
 	/*
@@ -167,29 +187,5 @@ void Kin::AnimeControl()
 		{
 			image = animation[1];
 		}
-	}
-}
-
-Vector2D Kin::GetLocation() const
-{
-	return this->location;
-}
-
-void Kin::SetLocation(const Vector2D& location)
-{
-	this->location = location;
-}
-
-void Kin::SetLocation()
-{
-	if (type == 1)
-	{
-		location.x = 10.0f;
-		location.y = 400.0f;
-	}
-	else if (type == 2)
-	{
-		location.x = 600.0f;
-		location.y = 400.0f;
 	}
 }

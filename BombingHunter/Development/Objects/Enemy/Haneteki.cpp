@@ -26,24 +26,6 @@ void Haneteki::Initialize()
 	{
 		throw("ハネテキ画像がありません\n");
 	}
-	//location.x = 10.0f;
-	//location.y = 300.0f;
-	//location = ui->GetEnemyLocation_Type1();
-
-	ui = new UI;
-	/*
-	type = GetRand(1) + 1;
-	if (type == 1)
-	{
-		//location = ui->SetEnemyLocation_Type1();
-		location = One_Type_Location();
-	}
-	else if (type == 2)
-	{
-		//location = ui->SetEnemyLocation_Type2();
-		location = Two_Type_Location();
-	}
-	*/
 	//向きの設定
 	radian = 0.0;
 	//大きさの設定
@@ -66,7 +48,7 @@ void Haneteki::Update()
 //描画処理
 void Haneteki::Draw() const
 {
-	//プレイヤー画像の描画
+	//ハネテキ画像の描画
 	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
 	__super::Draw();
 
@@ -97,39 +79,32 @@ void Haneteki::Finalize()
 //当たり判定通知処理
 void Haneteki::OnHitCollision(GameObject* hit_object)
 {
-	//ローカル変数定義（インスタンスを取得）
-	//Scene* scene = new Scene;
-
 	/* --- 当たった時の処理(判別処理) --- */
-	if (dynamic_cast<Bullet*>(hit_object) != nullptr){
-		//Bulletなら削除を通知する
-		//scene->DeleteObject(hit_object);
-		velocity = 0.0f;
-	}
-	else if (dynamic_cast<Haneteki*>(hit_object) != nullptr){
-		//自分なら無視
-	}
+	//if (dynamic_cast<Bullet*>(hit_object) != nullptr){
+	//	//Bulletなら削除を通知する
+	//	d_flg = true;
+	//}
+	//else if (dynamic_cast<Haneteki*>(hit_object) != nullptr){
+	//	//自分なら無視
+	//	d_flg = false;
+	//}
+	//else {
+	//	d_flg = false;
+	//}
 }
+
+
+//消すかチェックして通知
+//bool Haneteki::D_Objects()
+//{
+//	return d_flg;
+//}
 
 //移動処理
 void Haneteki::Movement()
 {
-	//移動の速さ
-	//velocity = 0.0f; 
-	//velocity.x += 0.5f;
-	flip_flag = FALSE;
-	/*
-	if (type == 1)
-	{
-		velocity.x += 0.8f;
-		flip_flag = FALSE;
-	}
-	else if (type == 2)
-	{
-		velocity.x -= 0.8f;	
-		flip_flag = TRUE;
-	}
-	*/
+	flip_flag = TRUE;
+
 	//現在の位置座標に速さを加算する
 	location += velocity;
 }

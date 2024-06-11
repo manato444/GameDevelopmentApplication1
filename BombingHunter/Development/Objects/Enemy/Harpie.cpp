@@ -38,6 +38,12 @@ void Harpie::Initialize()
 
 	//初期画像の設定
 	image = animation[0];
+
+	//当たり判定の大きさ
+	box_size = Vector2D(54.0f);
+
+	//速度指定
+	velocity = Vector2D(0.3f, 0.0f);
 }
 
 void Harpie::Update()
@@ -52,23 +58,24 @@ void Harpie::Update()
 
 void Harpie::Draw() const
 {
-	//プレイヤー画像の描画
+	//ハーピー画像の描画
 	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
+	__super::Draw();
 
-	//デバッグ用
-#if _DEBUG
-	//当たり判定の可視化
-	Vector2D box_collision_upper_left = location - (Vector2D(1.0f) *
-		(float)scale / 2.0f);
-
-	Vector2D box_collision_lower_right = location + (Vector2D(1.0f) *
-		(float)scale / 2.0f);
-
-	DrawBoxAA(box_collision_upper_left.x, box_collision_upper_left.y,
-		box_collision_lower_right.x, box_collision_lower_right.y,
-		GetColor(255, 0, 0), FALSE);
-
-#endif
+//	//デバッグ用
+//#if _DEBUG
+//	//当たり判定の可視化
+//	Vector2D box_collision_upper_left = location - (Vector2D(1.0f) *
+//		(float)scale / 2.0f);
+//
+//	Vector2D box_collision_lower_right = location + (Vector2D(1.0f) *
+//		(float)scale / 2.0f);
+//
+//	DrawBoxAA(box_collision_upper_left.x, box_collision_upper_left.y,
+//		box_collision_lower_right.x, box_collision_lower_right.y,
+//		GetColor(255, 0, 0), FALSE);
+//
+//#endif
 }
 
 void Harpie::Finalize()
@@ -85,30 +92,8 @@ void Harpie::OnHitCollision(GameObject* hit_object)
 
 void Harpie::Movement()
 {
-
-	//移動の速さ
-	Vector2D velocity = 0.0f;
-	velocity.x += 0.5f;
 	flip_flag = FALSE;
 
-	/*
-	if (type == 1)
-	{
-
-		SetLocation();
-
-		velocity += -2.0f;
-		flip_flag = TRUE;
-	}
-	else if (type == 2)
-	{
-
-		SetLocation();
-
-		velocity += 2.0f;
-		flip_flag = FALSE;
-	}
-	*/
 	//現在の位置座標に速さを加算する
 	location += velocity;
 }
@@ -136,26 +121,3 @@ void Harpie::AnimeControl()
 	}
 }
 
-Vector2D Harpie::GetLocation() const
-{
-	return this->location;
-}
-
-void Harpie::SetLocation(const Vector2D& location)
-{
-	this->location = location;
-}
-
-void Harpie::SetLocation()
-{
-	if (type == 1)
-	{
-		location.x = 10.0f;
-		location.y = 400.0f;
-	}
-	else if (type == 2)
-	{
-		location.x = 600.0f;
-		location.y = 400.0f;
-	}
-}

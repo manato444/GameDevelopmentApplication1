@@ -12,7 +12,8 @@ GameObject::GameObject() :
 	type(NULL),
 	box_size(0.0f),
 	flip_flag(FALSE),
-	hit_flg(false)
+	hit_flg(false),
+	e_flg(false)
 {
 }
 //デストラクタ
@@ -67,10 +68,15 @@ void GameObject::OnHitCollision(GameObject* hit_object)
 	//当たった時に行う処理
 	delete hit_object;
 }
-
+//削除オブジェクト通知
 bool GameObject::D_Objects()
 {
 	return this->hit_flg;
+}
+//エフェクト生成通知
+bool GameObject::E_Effect()
+{
+	return this->e_flg;
 }
 
 ////ヒットオブジェクト削除判別処理

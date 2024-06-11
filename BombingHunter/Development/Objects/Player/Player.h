@@ -19,6 +19,7 @@ private:
 	int img_ch[2];
 	int img[12];
 	int img_cnt;
+	//int d_flg;
 
 public:
 	Player();
@@ -33,7 +34,7 @@ public:
 	//“–‚½‚è”»’è’Ê’mˆ—
 	virtual void OnHitCollision(GameObject* hit_object) override;
 	
-
+	//virtual bool D_Objects() override;
 
 
 private:

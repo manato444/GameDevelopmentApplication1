@@ -2,15 +2,13 @@
 
 #include"../GameObject.h"
 #include"../UI/UI.h"
+#include"../../Scene/Scene.h"
 
 class Kin : public GameObject
 {
-protected:
-
-
 private:
 
-	Vector2D location;
+	Vector2D velocity;
 	UI* ui;
 
 	int animation[5];		//アニメーション画像
@@ -19,6 +17,8 @@ private:
 
 	//敵かプレイヤーか{ 1:プレイヤー, 2: 敵 }
 	int type;
+
+	bool d_flg;
 
 public:
 	Kin();
@@ -31,6 +31,7 @@ public:
 
 	//当たり判定通知処理
 	virtual void OnHitCollision(GameObject* hit_object) override;
+	virtual bool D_Objects() override;
 
 private:
 	//移動処理
@@ -38,13 +39,5 @@ private:
 
 	//アニメーション制御
 	void AnimeControl();
-
-	//位置情報取得処理
-	Vector2D GetLocation() const;
-
-	//位置情報変更処理
-	void SetLocation(const Vector2D& locartion);
-
-	void SetLocation();
 
 };
