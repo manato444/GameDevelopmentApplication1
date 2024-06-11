@@ -28,8 +28,8 @@ void Scene::Initialize()
 	//image = LoadGraph("image/背景/背景1.png"); //	爆撃ハンター用背景
 	//f_image = LoadGraph("image/背景/フレーム.png");	//枠(?)
 	//image = LoadGraph("image/背景/back1.png");	//?
-	//image[0] = LoadGraph("image/背景/space.bmp");	//宇宙背景
-	image[0] = LoadGraph("image/背景/背景.png"); //爆撃ハンター着せ替え背景
+	image[0] = LoadGraph("image/背景/space.bmp");	//宇宙背景
+	//image[0] = LoadGraph("image/背景/背景.png"); //爆撃ハンター着せ替え背景
 	image[1] = LoadGraph("image/制限時間/timer.png");
 	image[2] = LoadGraph("image/スコア/スコア.png");
 
@@ -100,9 +100,9 @@ void Scene::Update()
 void Scene::Draw() const
 {
 	//背景画像の描画
-	//DrawGraph(bx % 640, 0, image[0], TRUE);
-	//DrawGraph(bx % 640 - 640, 0, image[0], TRUE);
-	DrawGraph(0, 0, image[0], TRUE);
+	DrawGraph(bx % 640, 0, image[0], TRUE);
+	DrawGraph(bx % 640 - 640, 0, image[0], TRUE);
+	//DrawGraph(0, 0, image[0], TRUE);
 
 	//UIの描画（仮）
 	DrawGraph(10, 450, image[1], TRUE); 
@@ -148,12 +148,10 @@ void Scene::randomchar()
 	if (num <= 50){
 		if (chara_count < MAX_ENEMY_CHARACTOR) {
 			//ハネテキを生成
-			if (r <= 50)
-			{
+			if (r <= 50){
 				CreateObject<Haneteki>(Vector2D(10.0f, 300.0f));
 			}
-			else
-			{
+			else{
 				CreateObject<Haneteki>(Vector2D(10.0f, 180.0f));
 			}
 		}		
@@ -194,7 +192,7 @@ void Scene::HitCheckObject(GameObject* a, GameObject* b)
 
 		//オブジェクトを削除((多分あんまよろしくない。
 		DeleteObject(a);
-		DeleteObject(b);
+		//DeleteObject(b);
 	}
 }
 //オブジェクトを削除する
@@ -211,6 +209,7 @@ void Scene::DeleteObject(GameObject* hit_object)
 				{
 					delete objects[i];		//メモリの解放
 					objects.erase(objects.begin() + i);	//要素の削除
+					DeleteBullet();	//シーンに弾が存在していれば削除
 					break;	//ループを抜ける
 				}
 				//消してほしいオブジェクトが "ハコテキ" と通知が来ていたら削除
@@ -218,6 +217,7 @@ void Scene::DeleteObject(GameObject* hit_object)
 				{
 					delete objects[i];		//メモリの解放
 					objects.erase(objects.begin() + i);	//要素の削除
+					DeleteBullet();	//シーンに弾が存在していれば削除
 					break;	//ループを抜ける
 				}
 				//消してほしいオブジェクトが "ハーピー" と通知が来ていたら削除
@@ -225,6 +225,7 @@ void Scene::DeleteObject(GameObject* hit_object)
 				{
 					delete objects[i];		//メモリの解放
 					objects.erase(objects.begin() + i);	//要素の削除
+					DeleteBullet();	//シーンに弾が存在していれば削除
 					break;	//ループを抜ける
 				}
 				//消してほしいオブジェクトが "金のテキ" と通知が来ていたら削除
@@ -232,6 +233,7 @@ void Scene::DeleteObject(GameObject* hit_object)
 				{
 					delete objects[i];		//メモリの解放
 					objects.erase(objects.begin() + i);	//要素の削除
+					DeleteBullet();	//シーンに弾が存在していれば削除
 					break;	//ループを抜ける
 				}
 			}
@@ -287,7 +289,48 @@ void Scene::Check_OffScreen()
 		}
 	}
 }
-/*--要らないかも
+//弾を消す処理
+void Scene::DeleteBullet()
+{
+	for (int i = 0; i < objects.size(); i++) {
+
+		// " 弾 "がシーンに存在していれば削除
+		if ((dynamic_cast<Bullet*>(objects[i]) != nullptr))
+		{
+			delete objects[i];		//メモリの解放
+			objects.erase(objects.begin() + i);	//要素の削除
+			flg = false;	//弾を生成できるようにする
+			i--;	//要素の位置を示すインデックスがずれないように防止
+		}
+	}
+}
+
+//void Scene::Enemy_Bullet()
+//{
+//	for (int i = 0; i < objects.size(); i++)
+//	{
+//		//プレイヤーがいたら位置情報を取得して弾を生成する
+//		if ((dynamic_cast<Haneteki*>(objects[i]) != nullptr))
+//		{
+//			//Bulletを生成x
+//			//CreateObject<E_Bullet>(objects[i]->GetLocation())
+//			e_position = objects[i]->GetLocation();
+//		}
+//		if ((dynamic_cast<Player*>(objects[i]) != nullptr))
+//		{
+//			p_position = objects[i]->GetLocation();
+//		}
+//
+//		direction = p_position - e_position;
+//			
+//			float bs = 1.5f;
+//			Vector2D Bv = direction * bs;
+//
+//			CreateObject<E_Bullet>(e_position);
+//	}
+//}
+
+/*--要らない
 //出現パターンをセット(タイプ1 : 左から出現させる)
 Vector2D Scene::One_Type_Location()
 {
@@ -299,26 +342,5 @@ Vector2D Scene::Two_Type_Location()
 //	return Vector2D(600, 300);
 //}
 //*/
-/*
-void Scene::Enemy_Bullet()
-{
-	e_cnt++;
-	if (e_cnt >= 360)
-	{
-		e_cnt = 0;
-		//配列にHanetekiがいるかひとつずつチェックする
-		for (int i = 0; i < objects.size(); i++)
-		{
-			//プレイヤーがいたら位置情報を取得して弾を生成する
-			if ((dynamic_cast<Haneteki*>(objects[i]) != nullptr))
-			{
 
-				//Bulletを生成x
-				CreateObject<E_Bullet>(objects[i]->GetLocation());
-
-			}
-		}
-	}
-}
-*/
 

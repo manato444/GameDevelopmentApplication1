@@ -30,6 +30,10 @@ private:
 	//ゲームオブジェクトを動的配列で管理
 	std::vector<GameObject*> objects;
 
+	Vector2D e_position;
+	Vector2D p_position;
+	Vector2D direction;
+
 	bool flg = false;
 
 	int image[3];		//画像
@@ -66,6 +70,9 @@ public:
 
 	//オブジェクトを削除する処理
 	void DeleteObject(GameObject* hit_object);
+
+	//弾を削除する処理
+	void DeleteBullet();
 	
 public:
 

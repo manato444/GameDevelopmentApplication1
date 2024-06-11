@@ -20,6 +20,7 @@ private:
 	int img[12];
 	int img_cnt;
 	//int d_flg;
+	//Vector2D locaiton;
 
 public:
 	Player();
@@ -35,7 +36,6 @@ public:
 	virtual void OnHitCollision(GameObject* hit_object) override;
 	
 	//virtual bool D_Objects() override;
-
 
 private:
 	Vector2D stick[2];	//スティック入力値 = { stick[0]:左スティック, stick[1]:右スティック }

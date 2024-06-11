@@ -80,24 +80,25 @@ void Kin::Update()
 
 void Kin::Draw() const
 {
+
 	//画像の描画
 	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
 	//__super::Draw();
 
 //	//デバッグ用
-#if _DEBUG
-	//当たり判定の可視化
-	Vector2D box_collision_upper_left = location - (Vector2D(1.0f) *
-		(float)scale / 2.0f);
-
-	Vector2D box_collision_lower_right = location + (Vector2D(1.0f) *
-		(float)scale / 2.0f);
-
-	DrawBoxAA(box_collision_upper_left.x, box_collision_upper_left.y,
-		box_collision_lower_right.x, box_collision_lower_right.y,
-		GetColor(255, 0, 0), FALSE);
-
-#endif
+//#if _DEBUG
+//	//当たり判定の可視化
+//	Vector2D box_collision_upper_left = location - (Vector2D(1.0f) *
+//		(float)scale / 2.0f);
+//
+//	Vector2D box_collision_lower_right = location + (Vector2D(1.0f) *
+//		(float)scale / 2.0f);
+//
+//	DrawBoxAA(box_collision_upper_left.x, box_collision_upper_left.y,
+//		box_collision_lower_right.x, box_collision_lower_right.y,
+//		GetColor(255, 0, 0), FALSE);
+//
+//#endif
 }
 
 void Kin::Finalize()

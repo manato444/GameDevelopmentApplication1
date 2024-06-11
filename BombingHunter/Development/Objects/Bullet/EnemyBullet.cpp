@@ -41,6 +41,8 @@ void E_Bullet::Initialize()
 
 	//当たり判定の大きさ
 	box_size = Vector2D(40.0f, 40.0f);
+
+	velocity = Vector2D(0.0f, -1.0f);
 }
 
 void E_Bullet::Update()
@@ -92,29 +94,31 @@ void E_Bullet::OnHitCollision(GameObject* hit_object)
 
 void E_Bullet::Movement()
 {
-	velocity = 0.0f;
-
-	//radian += DX_PI_F / 2;
-	velocity.y -= 1.0f;
 	flip_flag = FALSE;
+	//現在の位置座標に速さを加算する
+	location += velocity;
+
+	//velocity = 0.0f;
+
+	////radian += DX_PI_F / 2;
+	//velocity.y -= 1.0f;
+
 	//flip_flag = TRUE;
 	//radian = DX_PI_F / 60;
 
 	//フレームカウントを加算する
-	animation_count++;
+	//animation_count++;
 
-	//1フレームごとに回転させる
+	////1フレームごとに回転させる
 
-	if (animation_count >= 3)
-	{
-		//カウントリセット
-		animation_count = 0;
-		radian += DX_PI_F / 180;
-	}
+	//if (animation_count >= 3)
+	//{
+	//	//カウントリセット
+	//	animation_count = 0;
+	//	radian += DX_PI_F / 180;
+	//}
 
 
-	//現在の位置座標に速さを加算する
-	location += velocity;
 	/*
 	if (flip_flag == FALSE)
 	{

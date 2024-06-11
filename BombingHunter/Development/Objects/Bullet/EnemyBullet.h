@@ -5,6 +5,7 @@
 #include"../Enemy/Haneteki.h"
 #include"../Enemy/Hakoteki.h"
 #include"../Bullet/Bullet.h"
+#include"../../Scene/Scene.h"
 
 class E_Bullet : public GameObject
 {
@@ -12,6 +13,7 @@ private:
 
 	//移動の速さ
 	Vector2D velocity;
+	//Vector2D eb_location;
 
 	int animation[2];		//アニメーション画像
 	int animation_count;	//アニメーション時間

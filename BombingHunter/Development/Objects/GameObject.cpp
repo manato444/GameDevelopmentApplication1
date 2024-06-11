@@ -35,10 +35,11 @@ void GameObject::Draw() const
 	//ƒƒ“ƒo‚Ìî•ñ‚ğŠî‚É‰æ‘œ‚ğ•`‰æ
 	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
 
+	/*
 	Vector2D tl = location - (box_size / 2.0f);
 	Vector2D br = location + (box_size / 2.0f);
 	DrawBoxAA(tl.x, tl.y, br.x, br.y, GetColor(255, 0, 0), FALSE);
-
+	*/
 	//“–‚½‚è”»’è‚Ì‰Â‹‰»
 	/*
 #ifdef D_PIVOT_CENTER
