@@ -11,6 +11,7 @@ protected:
 private:
 
 	Vector2D velocity;
+	std::vector<int> animation_data;	//アニメーションデータ
 	UI* ui;
 
 	int animation[2];		//アニメーション画像

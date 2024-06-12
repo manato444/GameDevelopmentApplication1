@@ -2,15 +2,8 @@
 #include"DxLib.h"
 
 Kin::Kin() :
-	animation_count(0), flip_flag(NULL), type(NULL), d_flg(false)
+	animation_count(0), flip_flag(NULL), type(NULL), d_flg(false), animation_data()
 {
-	
-	for (int i = 0; i < 5; i++)
-	{
-	animation[i] = NULL;
-	}
-	
-
 }
 
 Kin::~Kin()
@@ -19,6 +12,23 @@ Kin::~Kin()
 
 void Kin::Initialize()
 {
+
+	//ローカル変数定義
+	ResourceManager* rm = ResourceManager::GetInstance();
+	std::vector<int> tmp;
+
+	//アニメーションを読み込む
+	tmp = rm->GetImages("image/金のテキ/金のテキ1.png");
+	animation_data.push_back(tmp[0]);	//アニメーション画像を配列に追加
+	tmp = rm->GetImages("image/金のテキ/金のテキ2.png");
+	animation_data.push_back(tmp[0]);
+	tmp = rm->GetImages("image/金のテキ/金のテキ3.png");
+	animation_data.push_back(tmp[0]);	//アニメーション画像を配列に追加
+	tmp = rm->GetImages("image/金のテキ/金のテキ4.png");
+	animation_data.push_back(tmp[0]);
+	tmp = rm->GetImages("image/金のテキ/金のテキ5.png");
+	animation_data.push_back(tmp[0]);	//アニメーション画像を配列に追加
+
 	//画像の読み込み
 	/*
 	animation[0] = LoadGraph("image/金のテキ/1.png");
@@ -34,11 +44,12 @@ void Kin::Initialize()
 	animation[3] = LoadGraph("image/金のテキ/Kin.bmp");
 	animation[4] = LoadGraph("image/金のテキ/Kin.bmp");
 	*/
-	animation[0] = LoadGraph("image/金のテキ/金のテキ1.png");
+
+	/*animation[0] = LoadGraph("image/金のテキ/金のテキ1.png");
 	animation[1] = LoadGraph("image/金のテキ/金のテキ2.png");
 	animation[2] = LoadGraph("image/金のテキ/金のテキ3.png");
 	animation[3] = LoadGraph("image/金のテキ/金のテキ4.png");
-	animation[4] = LoadGraph("image/金のテキ/金のテキ5.png");
+	animation[4] = LoadGraph("image/金のテキ/金のテキ5.png");*/
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1 || animation[2] == -1 || animation[3] == -1 || animation[4] == -1)
@@ -49,8 +60,8 @@ void Kin::Initialize()
 	//ui = new UI;
 	//location = ui->GetEnemyLocation();
 
-	location.x = 630.0f;
-	location.y = 400.0f;
+	//location.x = 630.0f;
+	//location.y = 400.0f;
 
 	//向きの設定
 	radian = 0.0;
@@ -59,10 +70,11 @@ void Kin::Initialize()
 	scale = 30.0;
 
 	//初期画像の設定
-	image = animation[0];
+	//image = animation[0];
+	image = animation_data[0];
 
 	//速度指定
-	velocity = Vector2D(-1.0f, 0.0f);
+	velocity = Vector2D(1.0f, 0.0f);
 
 	//当たり判定の大きさ
 	box_size = Vector2D(30.0f);
@@ -82,8 +94,8 @@ void Kin::Draw() const
 {
 
 	//画像の描画
-	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
-	//__super::Draw();
+	//DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
+	__super::Draw();
 
 //	//デバッグ用
 //#if _DEBUG
@@ -104,8 +116,8 @@ void Kin::Draw() const
 void Kin::Finalize()
 {
 	//使用した画像を解放する
-	DeleteGraph(animation[0]);
-	DeleteGraph(animation[1]);
+	DeleteGraph(animation_data[0]);
+	DeleteGraph(animation_data[1]);
 }
 
 void Kin::OnHitCollision(GameObject* hit_object)
@@ -128,11 +140,13 @@ bool Kin::D_Objects()
 
 void Kin::Movement()
 {
+	flip_flag = TRUE;
+	//現在の位置座標に速さを加算する
+	location += velocity;
 
 	//移動の速さ
 	/*Vector2D velocity = 0.0f;
 	velocity.x -= 1.0f;*/
-	flip_flag = TRUE;
 
 	/*
 	if (type == 1)
@@ -152,8 +166,7 @@ void Kin::Movement()
 		flip_flag = FALSE;
 	}
 	*/
-	//現在の位置座標に速さを加算する
-	location += velocity;
+
 }
 
 void Kin::AnimeControl()
@@ -162,31 +175,31 @@ void Kin::AnimeControl()
 	animation_count++;
 
 	//60フレーム目に到達したら
-	if (animation_count >= 60)
+	if (animation_count >= 30)
 	{
 		//カウントリセット
 		animation_count = 0;
 
 		//画像の切り替え(ゴリ押し)
-		if (image == animation[0])
+		if (image == animation_data[0])
 		{
-			image = animation[1];
+			image = animation_data[1];
 		}
-		else if(image == animation[1])
+		else if(image == animation_data[1])
 		{
-			image = animation[2];
+			image = animation_data[2];
 		}
-		else if (image == animation[2])
+		else if (image == animation_data[2])
 		{
-			image = animation[3];
+			image = animation_data[3];
 		}
-		else if (image == animation[3])
+		else if (image == animation_data[3])
 		{
-			image = animation[4];
+			image = animation_data[4];
 		}
 		else
 		{
-			image = animation[1];
+			image = animation_data[1];
 		}
 	}
 }

@@ -44,6 +44,7 @@ private:
 	//int type;							//キャラタイプ
 
 	int bx;	//背景の描画位置
+	float c;
 	
 	//Vector2D One_Type_Location();
 	//Vector2D Two_Type_Location();

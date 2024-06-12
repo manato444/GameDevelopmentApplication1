@@ -14,6 +14,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	//ウィンドウサイズ(横：640px, 縦：480px)を設定
 	SetGraphMode(640, 480, 32);
+	//SetGraphMode(960, 720, 32);
+
 
 	//ウィンドウのタイトルを設定
 	SetMainWindowText("爆撃ハンターC++");

@@ -6,7 +6,8 @@ Scene::Scene() :
 	objects(),f_image(NULL),
 	enemy_popcount(0),
 	chara_count(0),
-	bx(0)
+	bx(0),
+	c(6000.0f)
 {
 }
 //デストラクタ
@@ -41,7 +42,7 @@ void Scene::Initialize()
 void Scene::Update()
 {
 	//背景画像の描画位置を更新
-	bx += 2;
+	bx += 1;
 	//bx = 0;
 
 	//だいたい２秒ごとに敵を生成
@@ -94,6 +95,8 @@ void Scene::Update()
 	}
 	//Bullet画面外チェック
 	Check_OffScreen();
+	c--;
+
 }
 
 //描画処理
@@ -108,7 +111,16 @@ void Scene::Draw() const
 	DrawGraph(10, 450, image[1], TRUE); 
 	DrawGraph(210, 450, image[2], TRUE);
 
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "%.1f", c);
 	
+	//燃料ゲージの描画
+	float fx = 100.0f;
+	float fy = 460.0f;
+
+	/*DrawBoxAA(fx, fy + 20.0f, fx + (player->GetFuel() * 100 / player->SetFuel()), fy + 40.0f,
+		GetColor(0, 230, 0), TRUE);*/
+	//DrawBoxAA(fx, fy + 20.0f, fx + 100.0f, fy + 40.0f, GetColor(255, 255, 255), TRUE);
+
 	//DrawGraph(0, bx % 480 - 480, image, TRUE);
 	//DrawGraph(0, 0, f_image, TRUE);
 
@@ -171,7 +183,7 @@ void Scene::randomchar()
 	else{
 		if (chara_count < MAX_ENEMY_CHARACTOR){
 			//金のテキを生成
-			CreateObject<Kin>(Vector2D(620.0f, 420.0f));
+			CreateObject<Kin>(Vector2D(10.0f, 420.0f));
 		}
 	}
 }
@@ -190,9 +202,8 @@ void Scene::HitCheckObject(GameObject* a, GameObject* b)
 		a->OnHitCollision(b);
 		b->OnHitCollision(a);
 
-		//オブジェクトを削除((多分あんまよろしくない。
+		//オブジェクトを削除
 		DeleteObject(a);
-		//DeleteObject(b);
 	}
 }
 //オブジェクトを削除する
@@ -204,32 +215,11 @@ void Scene::DeleteObject(GameObject* hit_object)
 			//削除通知を受け取ったか
 			if (obj->D_Objects() == true)
 			{
-				//消してほしいオブジェクトが "ハネテキ" と通知が来ていたら削除
-				if ((dynamic_cast<Haneteki*>(objects[i]) == hit_object))
-				{
-					delete objects[i];		//メモリの解放
-					objects.erase(objects.begin() + i);	//要素の削除
-					DeleteBullet();	//シーンに弾が存在していれば削除
-					break;	//ループを抜ける
-				}
-				//消してほしいオブジェクトが "ハコテキ" と通知が来ていたら削除
-				else if ((dynamic_cast<Hakoteki*>(objects[i]) == hit_object))
-				{
-					delete objects[i];		//メモリの解放
-					objects.erase(objects.begin() + i);	//要素の削除
-					DeleteBullet();	//シーンに弾が存在していれば削除
-					break;	//ループを抜ける
-				}
-				//消してほしいオブジェクトが "ハーピー" と通知が来ていたら削除
-				else if ((dynamic_cast<Harpie*>(objects[i]) == hit_object))
-				{
-					delete objects[i];		//メモリの解放
-					objects.erase(objects.begin() + i);	//要素の削除
-					DeleteBullet();	//シーンに弾が存在していれば削除
-					break;	//ループを抜ける
-				}
-				//消してほしいオブジェクトが "金のテキ" と通知が来ていたら削除
-				else if ((dynamic_cast<Kin*>(objects[i]) == hit_object))
+				//敵を削除する
+				if ((dynamic_cast<Haneteki*>(objects[i]) == hit_object) ||
+					(dynamic_cast<Hakoteki*>(objects[i]) == hit_object) ||
+					(dynamic_cast<Harpie*>(objects[i]) == hit_object) ||
+					(dynamic_cast<Kin*>(objects[i]) == hit_object))
 				{
 					delete objects[i];		//メモリの解放
 					objects.erase(objects.begin() + i);	//要素の削除
@@ -243,14 +233,17 @@ void Scene::DeleteObject(GameObject* hit_object)
 //画面外処理
 void Scene::Check_OffScreen()
 {
-	//変数定義
+	//変数定義(位置情報)
 	Vector2D bl;
+
+/* - - - - - - - - - - - - - - < 弾の削除 > - - - - - - - - - - - - - - - - - -  */
+
 	//配列にBulletがいるかひとつずつチェックする
 	for (int i = 0; i < objects.size(); i++){
 		//Bulletがいたら位置情報を取得
 		if ((dynamic_cast<Bullet*>(objects[i]) != nullptr))
 		{
-			bl = objects[i]->GetLocation();
+			bl = objects[i]->GetLocation();	//位置情報を取得
 
 			//弾が一番下に落ちたら削除する
 			if (bl.y > 460.0f)
@@ -258,14 +251,18 @@ void Scene::Check_OffScreen()
 				delete objects[i];	//メモリを解放
 				this->objects.erase(objects.begin() + i);	//要素の削除
 				i--;	//要素の位置を示すインデックスがずれないように防止
-				flg = false;
+				flg = false;	//弾を生成できるようにする
 			}
 		}
-		//"ハネテキ"＆"ハーピー" がいたら位置情報を取得 
+
+/* - - - - - - - - - - - - - - < 敵の削除 > - - - - - - - - - - - - - - - - - -  */
+
+		//"ハネテキ"＆"ハーピー"＆" 金のテキ " がいたら位置情報を取得 
 		if ((dynamic_cast<Haneteki*>(objects[i]) != nullptr) ||
-			(dynamic_cast<Harpie*>(objects[i]) != nullptr))
+			(dynamic_cast<Harpie*>(objects[i]) != nullptr) ||
+			(dynamic_cast<Kin*>(objects[i]) != nullptr))
 		{
-			bl = objects[i]->GetLocation();
+			bl = objects[i]->GetLocation();	//位置情報を取得
 
 			if (bl.x > 640.0f)
 			{
@@ -274,11 +271,10 @@ void Scene::Check_OffScreen()
 				i--;	//要素の位置を示すインデックスがずれないように防止
 			}
 		}
-		//"ハコテキ" ＆ "金のテキ" がいたら位置情報を取得 
-		if ((dynamic_cast<Hakoteki*>(objects[i]) != nullptr) ||
-			(dynamic_cast<Kin*>(objects[i]) != nullptr))
+		//"ハコテキ " がいたら位置情報を取得 
+		if ((dynamic_cast<Hakoteki*>(objects[i]) != nullptr))
 		{
-			bl = objects[i]->GetLocation();
+			bl = objects[i]->GetLocation();	//位置情報を取得
 
 			if (bl.x < 0.0f)
 			{
@@ -289,6 +285,7 @@ void Scene::Check_OffScreen()
 		}
 	}
 }
+
 //弾を消す処理
 void Scene::DeleteBullet()
 {

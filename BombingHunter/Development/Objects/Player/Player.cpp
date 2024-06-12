@@ -5,7 +5,7 @@
 #include"DxLib.h"
 
 //コンストラクタ
-Player::Player() : animation_count(0),rot(0)
+Player::Player() : animation_count(0), rot(0), animation_data()
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
@@ -188,9 +188,9 @@ void Player::Draw()const
 void Player::Finalize()
 {
 	//使用した画像を解放する
-	DeleteGraph(animation[0]);
-	DeleteGraph(animation[1]);
-	DeleteGraph(img[4]);
+	DeleteGraph(animation_data[0]);
+	DeleteGraph(animation_data[1]);
+	//DeleteGraph(img[4]);
 }
 
 //当たり判定通知処理
@@ -341,7 +341,7 @@ void Player::AnimeControl()
 	animation_count++;
 
 	//60フレームに到達したら
-	if (animation_count >= 60)
+	if (animation_count >= 50)
 	{
 		//カウントを0クリアする
 		animation_count = 0;

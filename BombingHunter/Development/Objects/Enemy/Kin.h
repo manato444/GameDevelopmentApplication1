@@ -9,6 +9,7 @@ class Kin : public GameObject
 private:
 
 	Vector2D velocity;
+	std::vector<int> animation_data;	//アニメーションデータ
 	UI* ui;
 
 	int animation[5];		//アニメーション画像

@@ -5,7 +5,7 @@
 #include"../../Utility/ResourceManager.h"
 
 Bullet::Bullet() :
-	animation_count(0), flip_flag(NULL)// type(NULL)
+	animation_count(0), flip_flag(NULL), animation_data()// type(NULL)
 {
 	animation[0] = NULL;
 	//animation[1] = NULL;
@@ -47,13 +47,13 @@ void Bullet::Initialize()
 	radian = DX_PI_F / 2;
 
 	//大きさの設定
-	scale = 30.0;
+	scale = 25.0;
 
 	//初期画像の設定
 	image = animation_data[0];
 
 	//当たり判定の大きさ
-	box_size = Vector2D(40.0f, 40.0f);
+	box_size = Vector2D(25.0f, 28.0f);
 
 	//移動速度の設定
 	velocity = Vector2D(0.0f, 1.5f);
@@ -97,8 +97,8 @@ void Bullet::Draw() const
 void Bullet::Finalize()
 {
 	//使用した画像を解放する
-	DeleteGraph(animation[0]);
-	DeleteGraph(animation[1]);
+	DeleteGraph(animation_data[0]);
+	DeleteGraph(animation_data[1]);
 }
 //当たったこと通知(hit_object)
 void Bullet::OnHitCollision(GameObject* hit_object)
@@ -154,7 +154,8 @@ void Bullet::Movement()
 	flip_flag = FALSE;
 	//現在の位置座標に速さを加算する
 	location += velocity;
-	/*
+	//location.x += 1;
+
 	//フレームカウントを加算する
 	animation_count++;
 	//1フレームごとに回転させる
@@ -162,9 +163,9 @@ void Bullet::Movement()
 	{
 		//カウントリセット
 		animation_count = 0;
-			//radian += DX_PI_F / 180;
+			radian += DX_PI_F / 60;
 	}
-	*/
+	
 	/*
 	if (flip_flag == FALSE)
 	{

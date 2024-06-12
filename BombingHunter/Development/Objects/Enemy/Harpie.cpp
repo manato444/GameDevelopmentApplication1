@@ -2,7 +2,7 @@
 #include"DxLib.h"
 
 Harpie::Harpie() :
-	animation_count(0), flip_flag(FALSE), type(NULL)
+	animation_count(0), flip_flag(FALSE), type(NULL), animation_data()
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
@@ -14,9 +14,19 @@ Harpie::~Harpie()
 
 void Harpie::Initialize()
 {
+	//ローカル変数定義
+	ResourceManager* rm = ResourceManager::GetInstance();
+	std::vector<int> tmp;
+
+	//アニメーションを読み込む
+	tmp = rm->GetImages("image/ハーピー/ハーピー1.png");
+	animation_data.push_back(tmp[0]);	//アニメーション画像を配列に追加
+	tmp = rm->GetImages("image/ハーピー/ハーピー2.png");
+	animation_data.push_back(tmp[0]);
+
 	//画像の読み込み
-	animation[0] = LoadGraph("image/ハーピー/ハーピー1.png");
-	animation[1] = LoadGraph("image/ハーピー/ハーピー2.png");
+	/*animation[0] = LoadGraph("image/ハーピー/ハーピー1.png");
+	animation[1] = LoadGraph("image/ハーピー/ハーピー2.png");*/
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
@@ -37,7 +47,8 @@ void Harpie::Initialize()
 	scale = 64.0;
 
 	//初期画像の設定
-	image = animation[0];
+	//image = animation[0];
+	image = animation_data[0];
 
 	//当たり判定の大きさ
 	box_size = Vector2D(54.0f);
@@ -59,7 +70,7 @@ void Harpie::Update()
 void Harpie::Draw() const
 {
 	//ハーピー画像の描画
-	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
+	//DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
 	__super::Draw();
 
 //	//デバッグ用
@@ -81,8 +92,8 @@ void Harpie::Draw() const
 void Harpie::Finalize()
 {
 	//使用した画像を解放する
-	DeleteGraph(animation[0]);
-	DeleteGraph(animation[1]);
+	DeleteGraph(animation_data[0]);
+	DeleteGraph(animation_data[1]);
 }
 
 void Harpie::OnHitCollision(GameObject* hit_object)
@@ -98,26 +109,50 @@ void Harpie::Movement()
 	location += velocity;
 }
 
+//アニメーション制御
 void Harpie::AnimeControl()
 {
-	//フレームカウントを加算する
+	//カウントの更新
 	animation_count++;
 
-	//60フレーム目に到達したら
-	if (animation_count >= 60)
+	//60フレームに到達したら
+	if (animation_count >= 30)
 	{
-		//カウントリセット
+		//カウントを0クリアする
 		animation_count = 0;
 
-		//画像の切り替え
-		if (image == animation[0])
+		//画像の切り替えを行う
+		if (image == animation_data[0])
 		{
-			image = animation[1];
+			image = animation_data[1];
 		}
 		else
 		{
-			image = animation[0];
+			image = animation_data[0];
 		}
 	}
 }
+
+//void Harpie::AnimeControl()
+//{
+//	//フレームカウントを加算する
+//	animation_count++;
+//
+//	//60フレーム目に到達したら
+//	if (animation_count >= 60)
+//	{
+//		//カウントリセット
+//		animation_count = 0;
+//
+//		//画像の切り替え
+//		if (image == animation[0])
+//		{
+//			image = animation[1];
+//		}
+//		else
+//		{
+//			image = animation[0];
+//		}
+//	}
+//}
 

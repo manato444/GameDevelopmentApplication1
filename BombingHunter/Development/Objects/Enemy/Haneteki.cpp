@@ -3,7 +3,7 @@
 
 //コンストラクタ
 Haneteki::Haneteki() :
-	animation_count(0), flip_flag(FALSE), type(NULL)
+	animation_count(0), flip_flag(FALSE), type(NULL), animation_data()
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
@@ -15,9 +15,19 @@ Haneteki::~Haneteki()
 //初期化処理
 void Haneteki::Initialize()
 {
+	//ローカル変数定義
+	ResourceManager* rm = ResourceManager::GetInstance();
+	std::vector<int> tmp;
+
+	//アニメーションを読み込む
+	tmp = rm->GetImages("image/ハネテキ/ハネテキ1.png");
+	animation_data.push_back(tmp[0]);	//アニメーション画像を配列に追加
+	tmp = rm->GetImages("image/ハネテキ/ハネテキ2.png");
+	animation_data.push_back(tmp[0]);
+
 	//画像の読み込み
-	animation[0] = LoadGraph("image/ハネテキ/ハネテキ1.png");
-	animation[1] = LoadGraph("image/ハネテキ/ハネテキ2.png");
+	/*animation[0] = LoadGraph("image/ハネテキ/ハネテキ1.png");
+	animation[1] = LoadGraph("image/ハネテキ/ハネテキ2.png");*/
 	//animation[0] = LoadGraph("image/ハネテキ/Hane.bmp");
 	//animation[1] = LoadGraph("image/ハネテキ/Hane.bmp");
 
@@ -31,7 +41,9 @@ void Haneteki::Initialize()
 	//大きさの設定
 	scale = 45.0;
 	//初期画像の設定
-	image = animation[0];
+	//image = animation[0];
+	image = animation_data[0];
+
 	//移動速度の設定
 	velocity = Vector2D(0.5f, 0.0f);
 	//当たり判定の大きさ設定
@@ -49,7 +61,7 @@ void Haneteki::Update()
 void Haneteki::Draw() const
 {
 	//ハネテキ画像の描画
-	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
+	//DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
 	__super::Draw();
 
 	/*
@@ -73,8 +85,8 @@ void Haneteki::Draw() const
 void Haneteki::Finalize()
 {
 	//使用した画像を解放する
-	DeleteGraph(animation[0]);
-	DeleteGraph(animation[1]);
+	DeleteGraph(animation_data[0]);
+	DeleteGraph(animation_data[1]);
 }
 //当たり判定通知処理
 void Haneteki::OnHitCollision(GameObject* hit_object)
@@ -108,29 +120,54 @@ void Haneteki::Movement()
 	//現在の位置座標に速さを加算する
 	location += velocity;
 }
+
 //アニメーション制御
 void Haneteki::AnimeControl()
 {
-	//フレームカウントを加算する
+	//カウントの更新
 	animation_count++;
 
-	//60フレーム目に到達したら
-	if (animation_count >= 60)
+	//60フレームに到達したら
+	if (animation_count >= 50)
 	{
-		//カウントリセット
+		//カウントを0クリアする
 		animation_count = 0;
 
-		//画像の切り替え
-		if (image == animation[0])
+		//画像の切り替えを行う
+		if (image == animation_data[0])
 		{
-			image = animation[1];
+			image = animation_data[1];
 		}
 		else
 		{
-			image = animation[0];
+			image = animation_data[0];
 		}
 	}
 }
+
+//アニメーション制御
+//void Haneteki::AnimeControl()
+//{
+//	//フレームカウントを加算する
+//	animation_count++;
+//
+//	//60フレーム目に到達したら
+//	if (animation_count >= 60)
+//	{
+//		//カウントリセット
+//		animation_count = 0;
+//
+//		//画像の切り替え
+//		if (image == animation[0])
+//		{
+//			image = animation[1];
+//		}
+//		else
+//		{
+//			image = animation[0];
+//		}
+//	}
+//}
 
 //無関係
 /*

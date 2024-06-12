@@ -2,7 +2,7 @@
 #include"DxLib.h"
 
 Hakoteki::Hakoteki():
-	animation_count(0), flip_flag(NULL),type(NULL), d_flg(false)
+	animation_count(0), flip_flag(NULL),type(NULL), d_flg(false), animation_data()
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
@@ -15,9 +15,19 @@ Hakoteki::~Hakoteki()
 //初期化処理
 void Hakoteki::Initialize()
 {
+	//ローカル変数定義
+	ResourceManager* rm = ResourceManager::GetInstance();
+	std::vector<int> tmp;
+
+	//アニメーションを読み込む
+	tmp = rm->GetImages("image/ハコテキ/ハコテキ_1.png");
+	animation_data.push_back(tmp[0]);	//アニメーション画像を配列に追加
+	tmp = rm->GetImages("image/ハコテキ/ハコテキ_2.png");
+	animation_data.push_back(tmp[0]);
+
 	//画像の読み込み
-	animation[0] = LoadGraph("image/ハコテキ/ハコテキ_1.png");
-	animation[1] = LoadGraph("image/ハコテキ/ハコテキ_2.png");
+	//animation[0] = LoadGraph("image/ハコテキ/ハコテキ_1.png");
+	//animation[1] = LoadGraph("image/ハコテキ/ハコテキ_2.png");
 	//animation[0] = LoadGraph("image/ハコテキ/Hako.bmp");
 	//animation[1] = LoadGraph("image/ハコテキ/Hako.bmp");
 
@@ -31,7 +41,9 @@ void Hakoteki::Initialize()
 	//大きさの設定
 	scale = 45.0;
 	//初期画像の設定
-	image = animation[0];
+	//image = animation[0];
+	image = animation_data[0];
+
 	//当たり判定の大きさ
 	box_size = Vector2D(45.0f);
 	//移動速度
@@ -49,32 +61,16 @@ void Hakoteki::Update()
 void Hakoteki::Draw() const
 {
 	//ハコテキの描画
-	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
+	//DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
 	__super::Draw();
-	
-	/*
-	//デバッグ用
-#if _DEBUG
-	//当たり判定の可視化
-	Vector2D box_collision_upper_left = location - (Vector2D(1.0f) *
-		(float)scale / 2.0f);
-
-	Vector2D box_collision_lower_right = location + (Vector2D(1.0f) *
-		(float)scale / 2.0f);
-
-	DrawBoxAA(box_collision_upper_left.x, box_collision_upper_left.y,
-		box_collision_lower_right.x, box_collision_lower_right.y,
-		GetColor(255, 0, 0), FALSE);
-#endif
-*/
 }
 
 //終了時処理
 void Hakoteki::Finalize()
 {
 	//使用した画像を解放する
-	DeleteGraph(animation[0]);
-	DeleteGraph(animation[1]);
+	DeleteGraph(animation_data[0]);
+	DeleteGraph(animation_data[1]);
 }
 
 //当たり判定通知処理
@@ -108,21 +104,44 @@ void Hakoteki::Movement()
 //アニメーション制御
 void Hakoteki::AnimeControl()
 {
-	//フレームカウントを加算する
+	//カウントの更新
 	animation_count++;
 
-	//60フレーム目に到達したら
-	if (animation_count >= 60){
-		//カウントリセット
+	//60フレームに到達したら
+	if (animation_count >= 50)
+	{
+		//カウントを0クリアする
 		animation_count = 0;
 
-		//画像の切り替え
-		if (image == animation[0]){
-			image = animation[1];
+		//画像の切り替えを行う
+		if (image == animation_data[0])
+		{
+			image = animation_data[1];
 		}
-		else{
-			image = animation[0];
+		else
+		{
+			image = animation_data[0];
 		}
 	}
 }
+//アニメーション制御
+//void Hakoteki::AnimeControl()
+//{
+//	//フレームカウントを加算する
+//	animation_count++;
+//
+//	//60フレーム目に到達したら
+//	if (animation_count >= 60){
+//		//カウントリセット
+//		animation_count = 0;
+//
+//		//画像の切り替え
+//		if (image == animation[0]){
+//			image = animation[1];
+//		}
+//		else{
+//			image = animation[0];
+//		}
+//	}
+//}
 

@@ -10,6 +10,8 @@ protected:
 
 private:
 	Vector2D velocity;
+	std::vector<int> animation_data;	//アニメーションデータ
+
 
 	int animation[2];		//アニメーション画像
 	int animation_count;	//アニメーション時間
